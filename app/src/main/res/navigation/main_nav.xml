@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="id.teachly.ui.base.fragment.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/exploreFragment"
+        android:name="id.teachly.ui.base.fragment.search.SearchFragment"
+        android:label="@string/title_search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/discussFragment"
+        android:name="id.teachly.ui.base.fragment.discussion.DiscussionsFragment"
+        android:label="@string/title_discussion"
+        tools:layout="@layout/fragment_discussions" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="id.teachly.ui.base.fragment.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>

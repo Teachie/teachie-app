@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Teachly">
-        <activity android:name=".ui.register.RegisterActivity"></activity>
+        <activity
+            android:name=".ui.base.MainActivity"
+            android:label="@string/title_activity_main"></activity>
+        <activity android:name=".ui.register.RegisterActivity" />
         <activity android:name=".ui.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

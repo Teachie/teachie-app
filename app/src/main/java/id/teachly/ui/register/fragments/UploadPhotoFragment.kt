@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import id.teachly.MainActivity
 import id.teachly.R
 import id.teachly.databinding.FragmentUploadPhotoBinding
+import id.teachly.ui.base.MainActivity
 
 class UploadPhotoFragment : Fragment() {
 

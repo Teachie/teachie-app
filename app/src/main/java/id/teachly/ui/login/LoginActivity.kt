@@ -3,8 +3,8 @@ package id.teachly.ui.login
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import id.teachly.MainActivity
 import id.teachly.databinding.ActivityLoginBinding
+import id.teachly.ui.base.MainActivity
 import id.teachly.ui.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
