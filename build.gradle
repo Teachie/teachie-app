@@ -32,4 +32,5 @@ ext {
     kotlin_version = "1.4.10"
     lifecycle_version = "2.2.0"
     nav_version = "2.3.2"
+    coil_version = "1.1.0"
 }

@@ -4,28 +4,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DefaultItemAnimator
 import id.teachly.R
+import id.teachly.databinding.FragmentDiscussionsBinding
 
 class DiscussionsFragment : Fragment() {
 
     private lateinit var discussionsViewModel: DiscussionsViewModel
+    private lateinit var binding: FragmentDiscussionsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        discussionsViewModel =
-            ViewModelProvider(this).get(DiscussionsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_discussions, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        discussionsViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+        return inflater.inflate(R.layout.fragment_discussions, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentDiscussionsBinding.bind(view)
+        binding.rvDiscuss.apply {
+            itemAnimator = DefaultItemAnimator()
+            adapter = DiscussAdapter(requireContext(), 10)
+        }
     }
 }
