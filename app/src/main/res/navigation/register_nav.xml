@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/createAccountFragment"
-        android:name="id.teachly.ui.register.fragments.CreateAccountFragment"
+        android:name="id.teachly.ui.register.fragments.createaccount.CreateAccountFragment"
         android:label="fragment_create_account"
         tools:layout="@layout/fragment_create_account">
         <action
@@ -20,29 +20,16 @@
     </fragment>
     <fragment
         android:id="@+id/fillDataAcountFragment"
-        android:name="id.teachly.ui.register.fragments.FillDataAcountFragment"
+        android:name="id.teachly.ui.register.fragments.filldata.FillDataAccountFragment"
         android:label="fragment_fill_data_acount"
         tools:layout="@layout/fragment_fill_data_acount">
         <action
             android:id="@+id/action_fillDataAcountFragment_to_uploadPhotoFragment"
             app:destination="@id/uploadPhotoFragment" />
-        <action
-            android:id="@+id/action_fillDataAcountFragment_to_addInterestFragment"
-            app:destination="@id/addInterestFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@id/fillDataAcountFragment" />
     </fragment>
     <fragment
         android:id="@+id/uploadPhotoFragment"
-        android:name="id.teachly.ui.register.fragments.UploadPhotoFragment"
+        android:name="id.teachly.ui.register.fragments.uploadphoto.UploadPhotoFragment"
         android:label="fragment_upload_photo"
         tools:layout="@layout/fragment_upload_photo" />
-    <fragment
-        android:id="@+id/addInterestFragment"
-        android:name="id.teachly.ui.register.fragments.AddInterestFragment"
-        android:label="fragment_add_interest"
-        tools:layout="@layout/fragment_add_interest" />
 </navigation>

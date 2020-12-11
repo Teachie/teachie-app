@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "996220051451",
+    "firebase_url": "https://teachly-id.firebaseio.com",
+    "project_id": "teachly-id",
+    "storage_bucket": "teachly-id.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996220051451:android:eb9a226ac71ae80871f55e",
+        "android_client_info": {
+          "package_name": "id.teachly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "996220051451-dm81t7f2bq3nvb58fdaejvmdjgfop8o0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7QMgN730TWao8z_GK1Sjxj1aqhpZWk9g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "996220051451-dm81t7f2bq3nvb58fdaejvmdjgfop8o0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
