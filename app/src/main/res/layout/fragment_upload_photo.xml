@@ -4,25 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.register.fragments.UploadPhotoFragment">
+    tools:context=".ui.register.fragments.uploadphoto.UploadPhotoFragment">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textView28"
+        style="@style/TextView.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Unggah Foto Kamu"
+        android:text="Unggah Foto"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout2" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Ayo unggah foto favorit kamu"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="75dp"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="100dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,23 +62,23 @@
             android:layout_height="match_parent">
 
             <View
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:background="#66000000"
                 android:elevation="1dp" />
 
             <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:id="@+id/ivAva"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 tools:src="@tools:sample/avatars" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/textView6"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:id="@+id/tvUpload"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:elevation="2dp"
         android:gravity="center"
         android:text="unggah foto"
@@ -67,7 +96,7 @@
         android:gravity="center"
         android:text="Selesai"
         android:textColor="@color/white"
-        app:backgroundTint="@color/purple_500"
+        app:backgroundTint="@color/primary"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="@+id/cardView"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
