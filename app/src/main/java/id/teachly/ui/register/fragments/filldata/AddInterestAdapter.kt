@@ -1,4 +1,4 @@
-package id.teachly.ui.register.fragments
+package id.teachly.ui.register.fragments.filldata
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import id.teachly.R
+import id.teachly.data.Category
 import id.teachly.databinding.ItemInterestBinding
 
 class AddInterestAdapter(
     private val context: Context,
-    private val listInterest: List<String>
+    private val dialogInters: DialogInterestImpl,
+    private val listInterest: List<Category>,
+    private val currentList: List<Category>
 ) : RecyclerView.Adapter<AddInterestAdapter.AddInterestViewHolder>() {
 
     class AddInterestViewHolder(view: View) : RecyclerView.ViewHolder(view)
@@ -25,7 +28,17 @@ class AddInterestAdapter(
     }
 
     override fun onBindViewHolder(holder: AddInterestViewHolder, position: Int) {
-        binding.checkBox.text = listInterest[position]
+        val category = listInterest[position]
+        binding.checkBox.apply {
+            text = category.name
+            if (currentList.contains(category)) isChecked = true
+            setOnCheckedChangeListener { _, isChecked ->
+                when (isChecked) {
+                    true -> dialogInters.addItem(category)
+                    false -> dialogInters.removeItem(category)
+                }
+            }
+        }
     }
 
     override fun getItemCount(): Int = listInterest.size
