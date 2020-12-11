@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import id.teachly.R
-import id.teachly.ui.login.LoginActivity
+import id.teachly.repo.remote.firebase.auth.Auth
+import id.teachly.ui.base.MainActivity
+import id.teachly.ui.welcome.WelcomeActivity
 import id.teachly.utils.Helpers
 
 class SplashActivity : AppCompatActivity() {
@@ -13,7 +15,9 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         Helpers.startDelay(2) {
-            startActivity(Intent(this, LoginActivity::class.java))
+            if (Auth.getCurrentUser() != null)
+                startActivity(Intent(this, MainActivity::class.java))
+            else startActivity(Intent(this, WelcomeActivity::class.java))
             finish()
         }
     }
