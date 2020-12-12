@@ -40,6 +40,14 @@ object Auth {
             }
     }
 
+    fun forgetPassword(email: String, isSuccess: (Boolean, message: String) -> Unit) {
+        instance.sendPasswordResetEmail(email)
+            .addOnCompleteListener {
+                if (it.isSuccessful) isSuccess(true, "Berhasil Dikirim")
+                else isSuccess(false, Helpers.errorLoginMessage[it.exception?.message] ?: "")
+            }
+    }
+
     fun logout() {
         instance.signOut()
     }
