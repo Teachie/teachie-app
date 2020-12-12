@@ -10,6 +10,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
@@ -20,6 +21,8 @@ import coil.request.ImageRequest
 import coil.request.SuccessResult
 import coil.size.Scale
 import coil.transform.CircleCropTransformation
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Timestamp
 import id.teachly.R
@@ -38,6 +41,7 @@ object Helpers {
         mapOf(
             "There is no user record corresponding to this identifier. The user may have been deleted." to "User tidak ditemukan",
             "The email address is badly formatted." to "Email tidak valid",
+            "The email address is already in use by another account." to "Email sudah terdaftar",
             "The password is invalid or the user does not have a password." to "Password salah",
             "The given password is invalid. [ Password should be at least 6 characters ]" to "Password paling sedikit 6 karakter"
         )
@@ -50,7 +54,8 @@ object Helpers {
             "Nama tidak boleh kosong",
             "Username tidak boleh kosong",
             "Tanggal lahir tidak boleh kosong",
-            "Format username salah"
+            "Format username salah",
+            "Username sudah digunakan",
         )
 
     fun Activity.tag(): String {
@@ -127,6 +132,7 @@ object Helpers {
         val request = ImageRequest.Builder(context)
             .data(this@loadDrawable)
             .crossfade(true)
+            .error(R.drawable.ic_favorite)
             .transformations(CircleCropTransformation())
             .scale(Scale.FILL)
             .build()
@@ -161,5 +167,21 @@ object Helpers {
 
     fun String.toTimeStamp(format: String): Timestamp {
         return Timestamp(SimpleDateFormat(format, Locale.getDefault()).parse(this))
+    }
+
+    fun createBottomSheetDialog(
+        context: Context,
+        layout: Int,
+        onViewCreated: (view: View, dialog: BottomSheetDialog) -> Unit
+    ) {
+        val view = LayoutInflater.from(context).inflate(layout, null)
+        val dialog = BottomSheetDialog(context, R.style.CustomBottomSheetDialogTheme)
+        dialog.setContentView(view)
+        val behaviour = BottomSheetBehavior.from(view.parent as View)
+            .apply {
+                peekHeight = BottomSheetBehavior.PEEK_HEIGHT_AUTO
+                expandedOffset = 56
+            }
+        onViewCreated(view, dialog)
     }
 }
