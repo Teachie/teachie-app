@@ -25,6 +25,7 @@ class UploadPhotoFragment : Fragment() {
     private lateinit var binding: FragmentUploadPhotoBinding
     private val model: RegisterViewModel by viewModels()
     private var imgUri: Uri? = "".toUri()
+    private var isPhotoReady = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,13 +42,12 @@ class UploadPhotoFragment : Fragment() {
             toolbar.setToolbarBack { view.findNavController().popBackStack() }
             btnNext.setOnClickListener {
                 Helpers.showLoadingDialog(requireContext(), "Sedang mengunggah foto")
-                model.uploadPhoto(imgUri ?: "".toUri()) { isSuccess ->
-                    Helpers.hideLoadingDialog()
-                    if (isSuccess) {
-                        startActivity(Intent(requireActivity(), MainActivity::class.java))
-                        requireActivity().finish()
+                if (isPhotoReady) {
+                    model.uploadPhoto(imgUri ?: "".toUri()) { isSuccess ->
+                        Helpers.hideLoadingDialog()
+                        if (isSuccess) navigateToMain()
                     }
-                }
+                } else navigateToMain()
             }
             tvUpload.setOnClickListener {
                 ImagePicker.with(requireActivity())
@@ -55,6 +55,8 @@ class UploadPhotoFragment : Fragment() {
                         when (resultCode) {
                             Activity.RESULT_OK -> {
                                 imgUri = data?.data
+                                isPhotoReady = true
+                                btnNext.text = "Selesai"
                                 ivAva.load(imgUri) { crossfade(true) }
                             }
                             ImagePicker.RESULT_ERROR -> {
@@ -67,5 +69,10 @@ class UploadPhotoFragment : Fragment() {
                     }
             }
         }
+    }
+
+    fun navigateToMain() {
+        startActivity(Intent(requireActivity(), MainActivity::class.java))
+        requireActivity().finish()
     }
 }
