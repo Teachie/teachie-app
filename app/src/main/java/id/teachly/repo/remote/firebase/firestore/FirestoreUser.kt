@@ -41,4 +41,16 @@ object FirestoreUser {
             }
             .addOnFailureListener { Log.d(TAG, "getUserById: failed = ${it.message}") }
     }
+
+    fun getUserByUsername(username: String, onResult: (Users) -> Unit) {
+        FirestoreInstance.instance.collection(Const.Collection.USER)
+            .whereEqualTo("username", username)
+            .get()
+            .addOnSuccessListener {
+                val users = mutableListOf<Users>()
+                for (data in it) users.add(data.toObject(Users::class.java))
+                onResult(if (users.size != 0) users[0] else Users())
+            }
+            .addOnFailureListener { Log.d(TAG, "getUserByUsername: failed = ${it.message}") }
+    }
 }

@@ -2,17 +2,19 @@ package id.teachly.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import id.teachly.R
 import id.teachly.databinding.ActivityLoginBinding
+import id.teachly.databinding.LayoutForgetPasswordBinding
 import id.teachly.repo.remote.firebase.auth.Auth
+import id.teachly.repo.remote.firebase.firestore.FirestoreUser
 import id.teachly.ui.base.MainActivity
 import id.teachly.ui.register.RegisterActivity
 import id.teachly.utils.Helpers
 import id.teachly.utils.Helpers.showError
-import id.teachly.utils.Helpers.tag
 
 class LoginActivity : AppCompatActivity() {
 
@@ -43,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
                         if (isSuccess) moveToMain()
                         else {
                             Helpers.hideLoadingDialog()
-                            if (Helpers.errorLoginMessage.values.indexOf(message) < 2)
+                            if (Helpers.errorLoginMessage.values.indexOf(message) < 3)
                                 showErrorEmail(message)
                             else showErrorPassword(message)
                         }
@@ -53,15 +55,56 @@ class LoginActivity : AppCompatActivity() {
                     Helpers.hideLoadingDialog()
                 }
             }
-            tvNoAccount.setOnClickListener {
-                startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
-            }
+
+            tvForgetPassword.setOnClickListener { showForgetPasswordDialog() }
+
         }
+    }
+
+    private fun showForgetPasswordDialog() {
+        Helpers.createBottomSheetDialog(this, R.layout.layout_forget_password) { view, dialog ->
+            val passwordBinding = LayoutForgetPasswordBinding.bind(view)
+            passwordBinding.apply {
+                edtEmail.addTextChangedListener(Helpers.getTextWatcher {
+                    Helpers.validateError(tilEmail)
+                })
+                btnClose.setOnClickListener { dialog.dismiss() }
+                btnSave.setOnClickListener {
+                    if (edtEmail.text.toString().isEmpty()) {
+                        sendResetPasswordEmail(edtEmail.text.toString()) { isSuccess, message ->
+                            if (isSuccess) {
+                                dialog.dismiss()
+                                Helpers.showToast(
+                                    this@LoginActivity,
+                                    "Pesan pengaturan ulang berhasil dikirim"
+                                )
+                            } else tilEmail.showError(message)
+                        }
+
+                    } else tilEmail.showError(Helpers.errorEmptyLoginMessage[0])
+                }
+            }
+            dialog.show()
+        }
+    }
+
+    private fun sendResetPasswordEmail(
+        email: String,
+        onResetSend: (isSuccess: Boolean, message: String) -> Unit
+    ) {
+        Auth.forgetPassword(email) { b, message -> onResetSend(b, message) }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) finish()
+        if (item.itemId == R.id.action_register)
+            startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_login, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     private fun isNotEmpty(): Boolean {
@@ -88,12 +131,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun moveToMain() {
-        Log.d(
-            this.tag(),
-            "Login Success: user= ${Auth.getCurrentUser()}"
-        )
-        startActivity(Intent(this, MainActivity::class.java))
-        finishAffinity()
+        FirestoreUser.getUserById(Auth.getUserId() ?: "") {
+            if (it.username == null)
+                startActivity(Intent(this, RegisterActivity::class.java).apply {
+                    putExtra(RegisterActivity.REGISTER_EXTRA, 1)
+                })
+            else startActivity(Intent(this, MainActivity::class.java))
+            finishAffinity()
+        }
     }
-
 }

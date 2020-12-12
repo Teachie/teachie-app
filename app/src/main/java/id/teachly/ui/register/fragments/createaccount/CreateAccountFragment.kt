@@ -1,6 +1,7 @@
 package id.teachly.ui.register.fragments.createaccount
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import id.teachly.R
 import id.teachly.databinding.FragmentCreateAccountBinding
+import id.teachly.ui.register.RegisterActivity
 import id.teachly.ui.register.RegisterViewModel
 import id.teachly.utils.Helpers
 import id.teachly.utils.Helpers.setToolbarBack
 import id.teachly.utils.Helpers.showError
+import id.teachly.utils.Helpers.tag
 
 class CreateAccountFragment : Fragment() {
 
@@ -35,6 +38,12 @@ class CreateAccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCreateAccountBinding.bind(view)
+
+        val data = (activity as RegisterActivity).getData()
+        Log.d(requireActivity().tag(), "getData: $data")
+        if (data == 1) view.findNavController().navigate(
+            CreateAccountFragmentDirections.actionCreateAccountFragmentToFillDataAcountFragment(data)
+        )
 
         binding.apply {
             toolbar.setToolbarBack { requireActivity().finish() }
@@ -60,7 +69,7 @@ class CreateAccountFragment : Fragment() {
                                     )
                             } else {
                                 Helpers.hideLoadingDialog()
-                                if (Helpers.errorLoginMessage.values.indexOf(message) < 2)
+                                if (Helpers.errorLoginMessage.values.indexOf(message) < 3)
                                     binding.tilEmailNew.showError(message)
                                 else binding.tilPasswordNew.showError(message)
                             }

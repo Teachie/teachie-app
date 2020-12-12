@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import id.teachly.R
 import id.teachly.data.Category
@@ -20,14 +18,17 @@ import id.teachly.databinding.FragmentAddInterestBinding
 import id.teachly.databinding.FragmentFillDataAcountBinding
 import id.teachly.repo.remote.firebase.auth.Auth
 import id.teachly.repo.remote.firebase.firestore.FirestoreCategory
+import id.teachly.repo.remote.firebase.firestore.FirestoreUser
 import id.teachly.ui.register.RegisterViewModel
 import id.teachly.utils.Const
+import id.teachly.utils.DummyData
 import id.teachly.utils.Helpers
 import id.teachly.utils.Helpers.setToolbarBack
 import id.teachly.utils.Helpers.showError
 import id.teachly.utils.Helpers.showView
 import id.teachly.utils.Helpers.tag
 import id.teachly.utils.Helpers.toTimeStamp
+import java.util.regex.Pattern
 
 class FillDataAccountFragment : Fragment(), DialogInterestImpl {
 
@@ -48,6 +49,7 @@ class FillDataAccountFragment : Fragment(), DialogInterestImpl {
             requireActivity().tag(),
             "onViewCreated: argument from Create = ${arguments?.getInt("amount")}"
         )
+
         binding = FragmentFillDataAcountBinding.bind(view)
         binding.apply {
             toolbar.setToolbarBack { view.findNavController().popBackStack() }
@@ -66,34 +68,25 @@ class FillDataAccountFragment : Fragment(), DialogInterestImpl {
                 Helpers.showLoadingDialog(requireContext(), "Sedang memperbaharui datamu")
                 if (isNotEmpty()) {
                     if (isUsernameValid()) {
-                        val currentUser = Auth.getCurrentUser()
-                        model.createDataUser(
-                            Users(
-                                currentUser?.uid,
-                                edtUsername.text.toString(),
-                                edtFullName.text.toString(),
-                                currentUser?.email,
-                                null,
-                                edtDate.text.toString().toTimeStamp(Const.DateFormat.SIMPLE),
-                                itemInterest.getNameOnly()
-                            )
-                        ) {
-                            if (it) {
-                                Helpers.hideLoadingDialog()
-                                view.findNavController()
-                                    .navigate(FillDataAccountFragmentDirections.actionFillDataAcountFragmentToUploadPhotoFragment())
-                            } else {
-                                Helpers.hideLoadingDialog()
-                            }
+                        isUsernameAvailable { available ->
+                            if (available) {
+                                if (isDataInterestExist()) {
+                                    Log.d(
+                                        requireActivity().tag(),
+                                        "isDataInterestExist: ${itemInterest.size}"
+                                    )
+                                    createNewAccount(view)
+                                } else {
+                                    Log.d(
+                                        requireActivity().tag(),
+                                        "isDataInterestExist: ${itemInterest.size}"
+                                    )
+                                    showErrorInterest()
+                                }
+                            } else showErrorUsername(4)
                         }
-                    } else {
-                        Helpers.hideLoadingDialog()
-                        tilUsername.showError(Helpers.errorEmptyFillDataMessage[3])
-                    }
-                } else {
-                    Helpers.hideLoadingDialog()
-                    validateField()
-                }
+                    } else showErrorUsername(3)
+                } else Helpers.hideLoadingDialog();validateField()
             }
             btnAddInterests.setOnClickListener {
                 showBottomDialog()
@@ -101,44 +94,84 @@ class FillDataAccountFragment : Fragment(), DialogInterestImpl {
         }
     }
 
-    private fun showBottomDialog() {
-        val view = layoutInflater.inflate(R.layout.fragment_add_interest, null)
-        val dialogBinding = FragmentAddInterestBinding.bind(view)
-        val dialog = BottomSheetDialog(requireContext(), R.style.CustomBottomSheetDialogTheme)
-        dialog.setContentView(view)
-        val behaviour = BottomSheetBehavior.from(view.parent as View)
-            .apply {
-                peekHeight = BottomSheetBehavior.PEEK_HEIGHT_AUTO
-                expandedOffset = binding.toolbar.height
-            }
-        dialogBinding.apply {
-            rvInterest.apply {
-                itemAnimator = DefaultItemAnimator()
-                FirestoreCategory.getAllCategory {
-                    adapter = AddInterestAdapter(
-                        requireContext(),
-                        this@FillDataAccountFragment, it, itemInterest
-                    )
-                }
-            }
-            btnSave.setOnClickListener {
-                binding.chipGroup.removeAllViews()
-                itemInterest.forEach {
-                    binding.chipGroup.addView(Chip(binding.chipGroup.context)
-                        .apply {
-                            text = it.name
-                            model.loadImage(it.img ?: "", requireContext()) { img ->
-                                chipIcon = img
-                            }
-                        })
-                }
-                binding.chipGroup.showView()
-                dialog.dismiss()
-            }
-            btnClose.setOnClickListener { dialog.dismiss() }
-        }
-        dialog.show()
+    private fun showErrorInterest() {
+        Helpers.hideLoadingDialog()
+        Helpers.showToast(
+            requireContext(),
+            "Kamu belum memilih minat yang kamu suka"
+        )
+    }
 
+    private fun showErrorUsername(data: Int) {
+        Helpers.hideLoadingDialog()
+        binding.tilUsername.showError(Helpers.errorEmptyFillDataMessage[data])
+    }
+
+    private fun createNewAccount(view: View) {
+        binding.apply {
+            val currentUser = Auth.getCurrentUser()
+            model.createDataUser(
+                Users(
+                    currentUser?.uid,
+                    edtUsername.text.toString(),
+                    edtFullName.text.toString(),
+                    currentUser?.email,
+                    DummyData.getImg((0..1).random(), (0..4).random()),
+                    edtDate.text.toString()
+                        .toTimeStamp(Const.DateFormat.SIMPLE),
+                    itemInterest.getNameOnly()
+                )
+            ) {
+                if (it) {
+                    Helpers.hideLoadingDialog()
+                    view.findNavController()
+                        .navigate(
+                            FillDataAccountFragmentDirections
+                                .actionFillDataAcountFragmentToUploadPhotoFragment()
+                        )
+                } else {
+                    Helpers.hideLoadingDialog()
+                }
+            }
+        }
+    }
+
+    private fun isDataInterestExist(): Boolean = itemInterest.size != 0
+
+    private fun showBottomDialog() {
+        Helpers.createBottomSheetDialog(
+            requireContext(),
+            R.layout.fragment_add_interest
+        ) { view, dialog ->
+            val dialogBinding = FragmentAddInterestBinding.bind(view)
+            dialogBinding.apply {
+                rvInterest.apply {
+                    itemAnimator = DefaultItemAnimator()
+                    FirestoreCategory.getAllCategory {
+                        adapter = AddInterestAdapter(
+                            requireContext(),
+                            this@FillDataAccountFragment, it, itemInterest
+                        )
+                    }
+                }
+                btnSave.setOnClickListener {
+                    binding.chipGroup.removeAllViews()
+                    itemInterest.forEach {
+                        binding.chipGroup.addView(Chip(binding.chipGroup.context)
+                            .apply {
+                                text = it.name
+                                model.loadImage(it.img ?: "", requireContext()) { img ->
+                                    chipIcon = img
+                                }
+                            })
+                    }
+                    binding.chipGroup.showView()
+                    dialog.dismiss()
+                }
+                btnClose.setOnClickListener { dialog.dismiss() }
+            }
+            dialog.show()
+        }
     }
 
     private fun isNotEmpty(): Boolean {
@@ -148,7 +181,19 @@ class FillDataAccountFragment : Fragment(), DialogInterestImpl {
     }
 
     private fun isUsernameValid(): Boolean {
-        return binding.edtUsername.text.toString().split(" ").size == 1
+        return binding.edtUsername.text.toString().split(" ").size == 1 && noSpecialChar()
+    }
+
+    private fun noSpecialChar(): Boolean {
+        val pattern = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE)
+        return !pattern.matcher(binding.edtUsername.text.toString()).find()
+    }
+
+    private fun isUsernameAvailable(isAvailable: (Boolean) -> Unit) {
+        FirestoreUser.getUserByUsername(binding.edtUsername.text.toString()) {
+            Log.d(requireActivity().tag(), "isUsernameAvailable: $it")
+            isAvailable(it.username == null)
+        }
     }
 
     private fun validateField() {
