@@ -53,4 +53,21 @@ object FirestoreUser {
             }
             .addOnFailureListener { Log.d(TAG, "getUserByUsername: failed = ${it.message}") }
     }
+
+    fun updateUser(users: Users, isSuccess: (Boolean) -> Unit) {
+        FirestoreInstance.instance.collection(Const.Collection.USER)
+            .document(Auth.getUserId() ?: "")
+            .update(
+                mapOf(
+                    "username" to users.username,
+                    "fullName" to users.fullName,
+                    "date" to users.date
+                )
+            )
+            .addOnSuccessListener { isSuccess(true) }
+            .addOnFailureListener {
+                isSuccess(true)
+                Log.d(TAG, "updateUser: failed = ${it.message}")
+            }
+    }
 }

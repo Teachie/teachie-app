@@ -15,6 +15,7 @@ import id.teachly.databinding.FragmentProfileBinding
 import id.teachly.repo.remote.firebase.auth.Auth
 import id.teachly.repo.remote.firebase.firestore.FirestoreCategory
 import id.teachly.repo.remote.firebase.firestore.FirestoreUser
+import id.teachly.ui.editprofile.EditProfileActivity
 import id.teachly.ui.welcome.WelcomeActivity
 import id.teachly.utils.Helpers
 
@@ -53,6 +54,15 @@ class ProfileFragment : Fragment() {
                             }
                         })
                     }
+                }
+
+                btnEditProfile.setOnClickListener {
+                    requireActivity().startActivity(
+                        Intent(
+                            requireContext(),
+                            EditProfileActivity::class.java
+                        )
+                    )
                 }
             }
 
