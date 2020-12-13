@@ -70,18 +70,26 @@ class LoginActivity : AppCompatActivity() {
                 })
                 btnClose.setOnClickListener { dialog.dismiss() }
                 btnSave.setOnClickListener {
-                    if (edtEmail.text.toString().isEmpty()) {
+                    Helpers.showLoadingDialog(this@LoginActivity)
+                    if (!edtEmail.text.isNullOrEmpty()) {
                         sendResetPasswordEmail(edtEmail.text.toString()) { isSuccess, message ->
                             if (isSuccess) {
+                                Helpers.hideLoadingDialog()
                                 dialog.dismiss()
                                 Helpers.showToast(
                                     this@LoginActivity,
                                     "Pesan pengaturan ulang berhasil dikirim"
                                 )
-                            } else tilEmail.showError(message)
+                            } else {
+                                Helpers.hideLoadingDialog()
+                                tilEmail.showError(message)
+                            }
                         }
 
-                    } else tilEmail.showError(Helpers.errorEmptyLoginMessage[0])
+                    } else {
+                        Helpers.hideLoadingDialog()
+                        tilEmail.showError(Helpers.errorEmptyLoginMessage[0])
+                    }
                 }
             }
             dialog.show()
