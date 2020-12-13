@@ -13,6 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Teachly">
+        <activity
+            android:name=".ui.editprofile.EditProfileActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.welcome.WelcomeActivity" />
         <activity
             android:name=".ui.base.MainActivity"
