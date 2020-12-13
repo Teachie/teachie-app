@@ -18,15 +18,24 @@ class SplashActivity : AppCompatActivity() {
         Helpers.startDelay(1) {
             if (Auth.getCurrentUser() != null) {
                 FirestoreUser.getUserById(Auth.getUserId() ?: "") {
-                    if (it.username != null) navigateToMain()
-                    else Auth.logout(); navigateToWelcome()
-                    finish()
+                    if (it.username != null) {
+                        navigateToMain()
+                    } else {
+                        Auth.logout()
+                        navigateToWelcome()
+                    }
                 }
-            } else navigateToWelcome(); finish()
+            } else navigateToWelcome()
         }
     }
 
-    private fun navigateToWelcome() = startActivity(Intent(this, WelcomeActivity::class.java))
+    private fun navigateToWelcome() {
+        startActivity(Intent(this, WelcomeActivity::class.java))
+        finish()
+    }
 
-    private fun navigateToMain() = startActivity(Intent(this, MainActivity::class.java))
+    private fun navigateToMain() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
 }
