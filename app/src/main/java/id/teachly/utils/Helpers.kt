@@ -13,6 +13,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import cn.pedant.SweetAlert.SweetAlertDialog
@@ -84,6 +85,16 @@ object Helpers {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
     }
+
+    fun getQueryChange(onSearch: (textChange: String?) -> Unit) =
+        object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = false
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                onSearch(newText)
+                return false
+            }
+        }
 
     private lateinit var pDialog: SweetAlertDialog
     fun showLoadingDialog(context: Context, message: String = "Loading") {

@@ -11,14 +11,25 @@ import id.teachly.databinding.ItemInterestBinding
 
 class AddInterestAdapter(
     private val context: Context,
-    private val dialogInters: DialogInterestImpl,
-    private val listInterest: List<Category>,
-    private val currentList: List<Category>
+    private val dialogInters: DialogInterestImpl
 ) : RecyclerView.Adapter<AddInterestAdapter.AddInterestViewHolder>() {
 
     class AddInterestViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     private lateinit var binding: ItemInterestBinding
+    private val listInterest = mutableListOf<Category>()
+    private val currentList = mutableListOf<Category>()
+
+    fun addData(data: List<Category>, currentData: List<Category>) {
+        listInterest.addAll(data)
+        currentList.addAll(currentData)
+    }
+
+    fun clear() {
+        val size = listInterest.size
+        listInterest.clear()
+        notifyItemRangeRemoved(0, size)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddInterestViewHolder {
         val view =
