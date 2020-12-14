@@ -33,6 +33,6 @@ class ExploreViewModel : ViewModel() {
         FirestoreUser.getUserById(Auth.getUserId() ?: "") { onResult(it.interest ?: listOf()) }
     }
 
-    val favoriteCategory: LiveData<List<Category>> = _favoriteCategory
-    val allCategory: LiveData<List<Category>> = _allCategory
+    val favoriteCategory: LiveData<List<Category>> get() = _favoriteCategory
+    val allCategory: LiveData<List<Category>> get() = _allCategory
 }

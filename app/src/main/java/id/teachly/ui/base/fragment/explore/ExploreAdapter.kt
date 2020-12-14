@@ -1,6 +1,7 @@
 package id.teachly.ui.base.fragment.explore
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import coil.transform.CircleCropTransformation
 import id.teachly.R
 import id.teachly.data.Category
 import id.teachly.databinding.ItemTopicBinding
+import id.teachly.ui.detailtopic.DetailTopicActivity
 
 class ExploreAdapter(
     private val context: Context,
@@ -32,6 +34,10 @@ class ExploreAdapter(
             ivTopic.load(category.img) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
+            }
+
+            contentMain.setOnClickListener {
+                context.startActivity(Intent(context, DetailTopicActivity::class.java))
             }
         }
     }

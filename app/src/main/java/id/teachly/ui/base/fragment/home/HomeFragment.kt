@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearSnapHelper
 import id.teachly.R
 import id.teachly.databinding.FragmentHomeBinding
 
@@ -28,6 +29,8 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.bind(view)
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
+
+        LinearSnapHelper().attachToRecyclerView(binding.rvHome)
 
         binding.rvHome.apply {
             itemAnimator = DefaultItemAnimator()
