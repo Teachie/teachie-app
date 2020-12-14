@@ -37,7 +37,8 @@ class ExploreAdapter(
             }
 
             contentMain.setOnClickListener {
-                context.startActivity(Intent(context, DetailTopicActivity::class.java))
+                context.startActivity(Intent(context, DetailTopicActivity::class.java)
+                    .apply { putExtra(DetailTopicActivity.DETAIL_TOPIC_EXTRA, category.name) })
             }
         }
     }
