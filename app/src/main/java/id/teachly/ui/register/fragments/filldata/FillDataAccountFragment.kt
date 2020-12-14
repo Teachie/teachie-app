@@ -20,21 +20,27 @@ import id.teachly.repo.remote.firebase.auth.Auth
 import id.teachly.repo.remote.firebase.firestore.FirestoreCategory
 import id.teachly.repo.remote.firebase.firestore.FirestoreUser
 import id.teachly.ui.register.RegisterViewModel
+
 import id.teachly.utils.Const
 import id.teachly.utils.DummyData
 import id.teachly.utils.Helpers
+import id.teachly.utils.Helpers.getQueryChange
 import id.teachly.utils.Helpers.setToolbarBack
 import id.teachly.utils.Helpers.showError
 import id.teachly.utils.Helpers.showView
 import id.teachly.utils.Helpers.tag
 import id.teachly.utils.Helpers.toTimeStamp
+import java.util.*
 import java.util.regex.Pattern
 
 class FillDataAccountFragment : Fragment(), DialogInterestImpl {
 
     private lateinit var binding: FragmentFillDataAcountBinding
+    private lateinit var dialogBinding: FragmentAddInterestBinding
+    private lateinit var interestAdapter: AddInterestAdapter
     private val model: RegisterViewModel by viewModels()
     private val itemInterest = mutableListOf<Category>()
+    private val currentInterestData = mutableListOf<Category>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -143,27 +149,39 @@ class FillDataAccountFragment : Fragment(), DialogInterestImpl {
             requireContext(),
             R.layout.fragment_add_interest
         ) { view, dialog ->
-            val dialogBinding = FragmentAddInterestBinding.bind(view)
+            dialogBinding = FragmentAddInterestBinding.bind(view)
             dialogBinding.apply {
-                rvInterest.apply {
-                    itemAnimator = DefaultItemAnimator()
-                    FirestoreCategory.getAllCategory {
-                        adapter = AddInterestAdapter(
-                            requireContext(),
-                            this@FillDataAccountFragment, it, itemInterest
-                        )
+
+
+                searchView.apply {
+                    setOnQueryTextListener(getQueryChange {
+
+                        FirestoreCategory.searchCategory(it ?: "") { category ->
+                            populateItemInterest(category)
+                        }
+
+                    })
+                    setOnCloseListener {
+                        populateItemInterest(currentInterestData)
+                        return@setOnCloseListener false
                     }
                 }
+
+                FirestoreCategory.getAllCategory {
+                    populateItemInterest(it)
+                }
+
                 btnSave.setOnClickListener {
                     binding.chipGroup.removeAllViews()
                     itemInterest.forEach {
-                        binding.chipGroup.addView(Chip(binding.chipGroup.context)
-                            .apply {
-                                text = it.name
-                                model.loadImage(it.img ?: "", requireContext()) { img ->
-                                    chipIcon = img
-                                }
-                            })
+                        binding.chipGroup.addView(
+                            Chip(binding.chipGroup.context)
+                                .apply {
+                                    text = it.name
+                                    model.loadImage(it.img ?: "", requireContext()) { img ->
+                                        chipIcon = img
+                                    }
+                                })
                     }
                     binding.chipGroup.showView()
                     dialog.dismiss()
@@ -172,6 +190,19 @@ class FillDataAccountFragment : Fragment(), DialogInterestImpl {
             }
             dialog.show()
         }
+    }
+
+    private fun populateItemInterest(data: List<Category>) {
+        dialogBinding.rvInterest.apply {
+            itemAnimator = DefaultItemAnimator()
+            adapter = AddInterestAdapter(
+                requireContext(),
+                this@FillDataAccountFragment,
+                data,
+                itemInterest
+            )
+        }
+        dialogBinding.rvInterest.adapter?.notifyDataSetChanged()
     }
 
     private fun isNotEmpty(): Boolean {
@@ -191,7 +222,6 @@ class FillDataAccountFragment : Fragment(), DialogInterestImpl {
 
     private fun isUsernameAvailable(isAvailable: (Boolean) -> Unit) {
         FirestoreUser.getUserByUsername(binding.edtUsername.text.toString()) {
-            Log.d(requireActivity().tag(), "isUsernameAvailable: $it")
             isAvailable(it.username == null)
         }
     }
@@ -212,12 +242,10 @@ class FillDataAccountFragment : Fragment(), DialogInterestImpl {
 
     override fun addItem(category: Category) {
         itemInterest.add(category)
-        Log.d(requireActivity().tag(), "addItem: $itemInterest")
     }
 
     override fun removeItem(category: Category) {
         itemInterest.remove(category)
-        Log.d(requireActivity().tag(), "removeItem: $itemInterest")
     }
 }
 
