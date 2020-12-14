@@ -35,11 +35,18 @@ object FirestoreUser {
     fun getUserById(userId: String, onResult: (Users) -> Unit) {
         FirestoreInstance.instance.collection(Const.Collection.USER)
             .document(userId)
-            .get()
-            .addOnSuccessListener {
-                onResult(it.toObject(Users::class.java) ?: Users())
+            .addSnapshotListener { value, error ->
+                if (error != null) {
+                    Log.d(TAG, "getUserById: failed = ${error.message}")
+                }
+
+                if (value != null && value.exists()) {
+                    Log.d(TAG, "getUserById: ${value.toObject(Users::class.java)}")
+                    onResult(value.toObject(Users::class.java) ?: Users())
+                } else {
+                    Log.d(TAG, "getUserById: failed = ${error?.message}")
+                }
             }
-            .addOnFailureListener { Log.d(TAG, "getUserById: failed = ${it.message}") }
     }
 
     fun getUserByUsername(username: String, onResult: (Users) -> Unit) {
