@@ -20,6 +20,7 @@ import id.teachly.repo.remote.firebase.auth.Auth
 import id.teachly.repo.remote.firebase.firestore.FirestoreCategory
 import id.teachly.repo.remote.firebase.firestore.FirestoreUser
 import id.teachly.ui.register.RegisterViewModel
+
 import id.teachly.utils.Const
 import id.teachly.utils.DummyData
 import id.teachly.utils.Helpers
@@ -56,7 +57,6 @@ class FillDataAccountFragment : Fragment(), DialogInterestImpl {
         )
 
         binding = FragmentFillDataAcountBinding.bind(view)
-        interestAdapter = AddInterestAdapter(requireContext(), this)
         binding.apply {
             toolbar.setToolbarBack { view.findNavController().popBackStack() }
 
@@ -152,18 +152,14 @@ class FillDataAccountFragment : Fragment(), DialogInterestImpl {
             dialogBinding = FragmentAddInterestBinding.bind(view)
             dialogBinding.apply {
 
-                rvInterest.apply {
-                    itemAnimator = DefaultItemAnimator()
-                    adapter = interestAdapter
-                }
 
                 searchView.apply {
                     setOnQueryTextListener(getQueryChange {
-                        val filter = currentInterestData.filter { category ->
-                            category.name?.toLowerCase(Locale.getDefault())
-                                ?.startsWith(it?.toLowerCase(Locale.getDefault()) ?: "") == true
+
+                        FirestoreCategory.searchCategory(it ?: "") { category ->
+                            populateItemInterest(category)
                         }
-                        populateItemInterest(filter)
+
                     })
                     setOnCloseListener {
                         populateItemInterest(currentInterestData)
@@ -172,11 +168,7 @@ class FillDataAccountFragment : Fragment(), DialogInterestImpl {
                 }
 
                 FirestoreCategory.getAllCategory {
-                    currentInterestData.apply {
-                        clear()
-                        addAll(it)
-                    }
-                    populateItemInterest(currentInterestData)
+                    populateItemInterest(it)
                 }
 
                 btnSave.setOnClickListener {
@@ -201,10 +193,16 @@ class FillDataAccountFragment : Fragment(), DialogInterestImpl {
     }
 
     private fun populateItemInterest(data: List<Category>) {
-        interestAdapter.apply {
-            clear()
-            addData(data, itemInterest)
+        dialogBinding.rvInterest.apply {
+            itemAnimator = DefaultItemAnimator()
+            adapter = AddInterestAdapter(
+                requireContext(),
+                this@FillDataAccountFragment,
+                data,
+                itemInterest
+            )
         }
+        dialogBinding.rvInterest.adapter?.notifyDataSetChanged()
     }
 
     private fun isNotEmpty(): Boolean {

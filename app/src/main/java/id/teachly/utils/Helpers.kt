@@ -195,4 +195,8 @@ object Helpers {
             }
         onViewCreated(view, dialog)
     }
+
+    fun String.capitalizeWords(): String =
+        split(" ").joinToString(" ") { it.capitalize(Locale.getDefault()) }
+
 }
