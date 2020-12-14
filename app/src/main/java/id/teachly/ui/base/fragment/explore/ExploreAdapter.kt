@@ -1,4 +1,4 @@
-package id.teachly.ui.base.fragment.search
+package id.teachly.ui.base.fragment.explore
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
 import id.teachly.R
+import id.teachly.data.Category
 import id.teachly.databinding.ItemTopicBinding
-import id.teachly.utils.Helpers
 
 class ExploreAdapter(
     private val context: Context,
-    private val size: Int
+    private val categories: List<Category>
 ) : RecyclerView.Adapter<ExploreAdapter.ExploreViewHolder>() {
     class ExploreViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
@@ -27,13 +27,15 @@ class ExploreAdapter(
 
     override fun onBindViewHolder(holder: ExploreViewHolder, position: Int) {
         binding.apply {
-            ivTopic.load(Helpers.dummyTopic) {
+            val category = categories[position]
+            tvTopicName.text = category.name
+            ivTopic.load(category.img) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
             }
         }
     }
 
-    override fun getItemCount(): Int = size
+    override fun getItemCount(): Int = categories.size
 
 }

@@ -21,6 +21,20 @@ object FirestoreCategory {
             .addOnFailureListener { Log.d(TAG, "getAllCategory: failed = ${it.message}") }
     }
 
+    fun getNotFavoriteCategory(myCategory: List<String>, onSuccess: (List<Category>) -> Unit) {
+        FirestoreInstance.instance.collection(Const.Collection.CATEGORY)
+            .whereNotIn("name", myCategory)
+            .get()
+            .addOnSuccessListener {
+                val categories = mutableListOf<Category>()
+                for (data in it) {
+                    categories.add(data.toObject(Category::class.java))
+                }
+                onSuccess(categories)
+            }
+            .addOnFailureListener { Log.d(TAG, "getNotFavoriteCategory: failed = ${it.message}") }
+    }
+
     fun getCategoryByName(names: List<String>, onSuccess: (List<Category>) -> Unit) {
         FirestoreInstance.instance.collection(Const.Collection.CATEGORY)
             .whereIn("name", names)

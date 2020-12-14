@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/exploreFragment"
-        android:name="id.teachly.ui.base.fragment.search.SearchFragment"
+        android:name="id.teachly.ui.base.fragment.explore.ExploreFragment"
         android:label="@string/title_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_explore" />
 
     <fragment
         android:id="@+id/discussFragment"
