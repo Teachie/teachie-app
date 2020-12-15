@@ -16,6 +16,7 @@ import id.teachly.repo.remote.firebase.auth.Auth
 import id.teachly.repo.remote.firebase.firestore.FirestoreCategory
 import id.teachly.repo.remote.firebase.firestore.FirestoreUser
 import id.teachly.ui.editprofile.EditProfileActivity
+import id.teachly.ui.saved.SavedActivity
 import id.teachly.ui.welcome.WelcomeActivity
 import id.teachly.utils.Helpers
 
@@ -61,6 +62,15 @@ class ProfileFragment : Fragment() {
                         Intent(
                             requireContext(),
                             EditProfileActivity::class.java
+                        )
+                    )
+                }
+
+                contentSaved.setOnClickListener {
+                    requireContext().startActivity(
+                        Intent(
+                            requireContext(),
+                            SavedActivity::class.java
                         )
                     )
                 }

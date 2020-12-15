@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Teachly">
-        <activity android:name=".ui.detailtopic.DetailTopicActivity"></activity>
+        <activity android:name=".ui.saved.SavedActivity"></activity>
+        <activity android:name=".ui.detailtopic.DetailTopicActivity" />
         <activity
             android:name=".ui.editprofile.EditProfileActivity"
             android:windowSoftInputMode="adjustResize" />
