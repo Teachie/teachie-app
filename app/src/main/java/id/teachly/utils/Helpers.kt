@@ -10,6 +10,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
@@ -198,5 +199,9 @@ object Helpers {
 
     fun String.capitalizeWords(): String =
         split(" ").joinToString(" ") { it.capitalize(Locale.getDefault()) }
+
+    fun Int.toDp(context: Context): Int = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), context.resources.displayMetrics
+    ).toInt()
 
 }

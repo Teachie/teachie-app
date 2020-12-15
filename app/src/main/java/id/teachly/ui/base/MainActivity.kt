@@ -1,5 +1,6 @@
 package id.teachly.ui.base
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -12,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import id.teachly.R
 import id.teachly.databinding.ActionbarMainBinding
 import id.teachly.databinding.ActivityMainBinding
+import id.teachly.ui.notification.NotificationActivity
 import id.teachly.utils.Helpers.hideView
 import id.teachly.utils.Helpers.showView
 import id.teachly.utils.Helpers.tag
@@ -71,13 +73,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_notification -> {
-            }
+            R.id.action_notification -> startActivity(
+                Intent(
+                    this,
+                    NotificationActivity::class.java
+                )
+            )
         }
         return super.onOptionsItemSelected(item)
     }
 
-    fun getHintTitle(label: String): String {
+    private fun getHintTitle(label: String): String {
         return when (label) {
             "Explore" -> {
                 "Mau belajar apa hari ini?"
