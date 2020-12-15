@@ -16,6 +16,10 @@
         <activity android:name=".ui.saved.SavedActivity"></activity>
         <activity android:name=".ui.detailtopic.DetailTopicActivity" />
         <activity
+            android:name=".ui.managecontent.ManageContentActivity"
+            android:label="@string/title_activity_manage_section"
+            android:theme="@style/Theme.Teachly.NoActionBar" />
+        <activity
             android:name=".ui.editprofile.EditProfileActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.welcome.WelcomeActivity" />

@@ -85,6 +85,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/contentSaved"
+        style="@style/ItemsTouchable"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -104,8 +105,9 @@
 
             <ImageView
                 android:id="@+id/imageView6"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="4dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_bookmark_border"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -129,6 +131,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView5"
+        style="@style/ItemsTouchable"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -148,8 +151,9 @@
 
             <ImageView
                 android:id="@+id/imageView7"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="4dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_outline_gesture_24"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -172,7 +176,8 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView6"
+        android:id="@+id/contentManage"
+        style="@style/ItemsTouchable"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -192,8 +197,9 @@
 
             <ImageView
                 android:id="@+id/imageView8"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="4dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_outline_dashboard"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -205,7 +211,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Kelola Postingan"
+                android:text="Kelola Konten"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -228,7 +234,7 @@
         app:backgroundTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView6"
+        app:layout_constraintTop_toBottomOf="@+id/contentManage"
         app:strokeColor="@color/secondary"
         app:strokeWidth="2dp" />
 
