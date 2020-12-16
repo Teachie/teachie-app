@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "996220051451-4ugimaj8dca9gk61b1ni6isgl30vfpnf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.teachly",
+            "certificate_hash": "168572651c04a68d1ba012e944e4695a90f774a1"
+          }
+        },
+        {
           "client_id": "996220051451-dm81t7f2bq3nvb58fdaejvmdjgfop8o0.apps.googleusercontent.com",
           "client_type": 3
         }
