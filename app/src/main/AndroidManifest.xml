@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Teachly">
-        <activity android:name=".ui.detaillist.DetailListActivity"></activity>
+        <activity android:name=".ui.createsection.CreateSectionActivity"></activity>
+        <activity android:name=".ui.detaillist.DetailListActivity" />
         <activity
             android:name=".ui.search.SearchActivity"
             android:label="@string/title_activity_search"

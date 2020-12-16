@@ -15,11 +15,11 @@ import id.teachly.databinding.ActionbarMainBinding
 import id.teachly.databinding.ActivityMainBinding
 import id.teachly.repo.remote.firebase.auth.Auth
 import id.teachly.repo.remote.firebase.firestore.FirestoreUser
+import id.teachly.ui.createsection.CreateSectionActivity
 import id.teachly.ui.notification.NotificationActivity
 import id.teachly.ui.search.SearchActivity
 import id.teachly.utils.Helpers.getQuerySubmit
 import id.teachly.utils.Helpers.hideView
-import id.teachly.utils.Helpers.showToast
 import id.teachly.utils.Helpers.showView
 import id.teachly.utils.Helpers.tag
 
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
 
             menu.findItem(R.id.addSectionFragment).setOnMenuItemClickListener {
-                showToast(this@MainActivity, "Add item")
+                startActivity(Intent(this@MainActivity, CreateSectionActivity::class.java))
                 return@setOnMenuItemClickListener true
             }
         }
