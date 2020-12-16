@@ -71,7 +71,7 @@ class UploadPhotoFragment : Fragment() {
         }
     }
 
-    fun navigateToMain() {
+    private fun navigateToMain() {
         startActivity(Intent(requireActivity(), MainActivity::class.java))
         requireActivity().finish()
     }

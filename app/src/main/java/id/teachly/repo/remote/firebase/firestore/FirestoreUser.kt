@@ -78,4 +78,15 @@ object FirestoreUser {
                 Log.d(TAG, "updateUser: failed = ${it.message}")
             }
     }
+
+    fun updateStatusCreator(isSuccess: (Boolean) -> Unit) {
+        FirestoreInstance.instance.collection(Const.Collection.USER)
+            .document(Auth.getUserId() ?: "")
+            .update("creator", true)
+            .addOnSuccessListener { isSuccess(true) }
+            .addOnFailureListener {
+                isSuccess(false)
+                Log.d(TAG, "updateStatusCreator: failed = ${it.message}")
+            }
+    }
 }

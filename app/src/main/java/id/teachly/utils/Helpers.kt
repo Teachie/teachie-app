@@ -230,4 +230,25 @@ object Helpers {
         override fun onPageScrollStateChanged(state: Int) {}
     }
 
+    fun showWarningDialog(
+        context: Context,
+        onConfirm: (confirm: Boolean) -> Unit
+    ) {
+        pDialog = SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE).apply {
+            titleText = "Apakah kamu sudah siap berbagi?"
+            confirmText = "Iya"
+            cancelText = "Belum"
+            setConfirmClickListener {
+                it.dismissWithAnimation()
+                onConfirm(true)
+            }
+            setCancelClickListener {
+                it.dismissWithAnimation()
+                onConfirm(false)
+            }
+            setCancelable(true)
+            show()
+        }
+    }
+
 }

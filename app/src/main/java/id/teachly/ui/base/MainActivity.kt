@@ -13,6 +13,8 @@ import androidx.navigation.ui.setupWithNavController
 import id.teachly.R
 import id.teachly.databinding.ActionbarMainBinding
 import id.teachly.databinding.ActivityMainBinding
+import id.teachly.repo.remote.firebase.auth.Auth
+import id.teachly.repo.remote.firebase.firestore.FirestoreUser
 import id.teachly.ui.notification.NotificationActivity
 import id.teachly.ui.search.SearchActivity
 import id.teachly.utils.Helpers.getQuerySubmit
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var actionbarBinding: ActionbarMainBinding
+    private var isContentCreator = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +35,12 @@ class MainActivity : AppCompatActivity() {
         actionbarBinding = binding.layoutActionBar
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+
+        FirestoreUser.getUserById(Auth.getUserId() ?: "") {
+            if (it.creator != null) isContentCreator = it.creator
+            if (!isUserContentCreator()) binding.navView.menu.findItem(R.id.addSectionFragment).isVisible =
+                false
+        }
 
         val navController = findNavController(R.id.navHostFragment)
 
@@ -48,7 +57,6 @@ class MainActivity : AppCompatActivity() {
         binding.navView.apply {
             setupWithNavController(navController)
 
-            if (!isContentCreator()) menu.findItem(R.id.addSectionFragment).isVisible = false
 
             menu.findItem(R.id.addSectionFragment).setOnMenuItemClickListener {
                 showToast(this@MainActivity, "Add item")
@@ -116,5 +124,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun isContentCreator() = false
+    private fun isUserContentCreator() = isContentCreator
 }

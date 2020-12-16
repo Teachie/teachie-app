@@ -20,7 +20,11 @@ import id.teachly.ui.managecontent.ManageContentActivity
 import id.teachly.ui.saved.SavedActivity
 import id.teachly.ui.welcome.WelcomeActivity
 import id.teachly.utils.Helpers
+import id.teachly.utils.Helpers.hideLoadingDialog
+import id.teachly.utils.Helpers.hideView
+import id.teachly.utils.Helpers.showLoadingDialog
 import id.teachly.utils.Helpers.showView
+import id.teachly.utils.Helpers.showWarningDialog
 
 class ProfileFragment : Fragment() {
 
@@ -51,6 +55,10 @@ class ProfileFragment : Fragment() {
                     text = it.bio
                     showView()
                 }
+
+                if (it.creator == false || it.creator == null) contentManage.hideView()
+                else contentBeCreator.hideView()
+
                 chipGroup.removeAllViews()
 
                 FirestoreCategory.getCategoryByName(it.interest ?: listOf()) { category ->
@@ -89,6 +97,17 @@ class ProfileFragment : Fragment() {
                             ManageContentActivity::class.java
                         )
                     )
+                }
+                contentBeCreator.setOnClickListener {
+                    showWarningDialog(requireContext()) { confirm ->
+                        if (confirm) {
+                            hideLoadingDialog()
+                            showLoadingDialog(requireContext())
+                            FirestoreUser.updateStatusCreator {
+                                requireActivity().finish()
+                            }
+                        }
+                    }
                 }
             }
 
