@@ -2,6 +2,7 @@ package id.teachly.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import id.teachly.R
 import id.teachly.repo.remote.firebase.auth.Auth
@@ -17,7 +18,8 @@ class SplashActivity : AppCompatActivity() {
 
         Helpers.startDelay(1) {
             if (Auth.getCurrentUser() != null) {
-                FirestoreUser.getUserById(Auth.getUserId() ?: "") {
+                Log.d("SplashActivity", "getCurrentUser: ${Auth.getCurrentUser()?.uid}")
+                FirestoreUser.getUserById(Auth.getCurrentUser()?.uid ?: "") {
                     if (it.username != null) {
                         navigateToMain()
                     } else {

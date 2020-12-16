@@ -37,7 +37,7 @@ object FirestoreUser {
             .document(userId)
             .addSnapshotListener { value, error ->
                 if (error != null) {
-                    Log.d(TAG, "getUserById: failed = ${error.message}")
+                    Log.d(TAG, "getUserById: failed error = ${error.message}")
                 }
 
                 if (value != null && value.exists()) {
@@ -45,6 +45,7 @@ object FirestoreUser {
                     onResult(value.toObject(Users::class.java) ?: Users())
                 } else {
                     Log.d(TAG, "getUserById: failed = ${error?.message}")
+                    onResult(Users())
                 }
             }
     }
