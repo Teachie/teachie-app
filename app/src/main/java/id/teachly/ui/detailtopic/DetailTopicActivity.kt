@@ -30,7 +30,7 @@ class DetailTopicActivity : AppCompatActivity() {
 
             rvSpace.apply {
                 itemAnimator = DefaultItemAnimator()
-                adapter = SpaceAdapter(this@DetailTopicActivity, 10)
+                adapter = SpaceAdapter(this@DetailTopicActivity, 10, 2)
             }
 
             rvTrendingSection.apply {
