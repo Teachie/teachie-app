@@ -22,6 +22,7 @@ object Const {
     object List {
         const val SECTION = "section"
         const val SPACE = "space"
+        const val SPACE_CHOOSE = "space_choose"
         const val USER = "user"
         const val DISCUSSION = "discussion"
     }

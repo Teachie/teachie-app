@@ -1,6 +1,7 @@
 package id.teachly.ui.detaillist
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import id.teachly.data.DetailData
@@ -38,6 +39,10 @@ class DetailListActivity : AppCompatActivity() {
 
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) finish()
+        return super.onOptionsItemSelected(item)
+    }
 
     companion object {
         const val DETAIL_EXTRA = "detail_extra"
