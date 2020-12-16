@@ -59,6 +59,7 @@ object Helpers {
             "Tanggal lahir tidak boleh kosong",
             "Format username salah",
             "Username sudah digunakan",
+            "Bio tidak boleh kosong"
         )
 
     fun Activity.tag(): String {

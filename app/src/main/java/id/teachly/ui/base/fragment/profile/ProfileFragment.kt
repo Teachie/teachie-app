@@ -20,6 +20,7 @@ import id.teachly.ui.managecontent.ManageContentActivity
 import id.teachly.ui.saved.SavedActivity
 import id.teachly.ui.welcome.WelcomeActivity
 import id.teachly.utils.Helpers
+import id.teachly.utils.Helpers.showView
 
 class ProfileFragment : Fragment() {
 
@@ -46,6 +47,10 @@ class ProfileFragment : Fragment() {
 
                 tvName.text = it.fullName
                 tvUsername.text = buildString { append("@").append(it.username) }
+                if (it.bio != null) tvBio.apply {
+                    text = it.bio
+                    showView()
+                }
                 chipGroup.removeAllViews()
 
                 FirestoreCategory.getCategoryByName(it.interest ?: listOf()) { category ->

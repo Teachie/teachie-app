@@ -68,6 +68,7 @@ object FirestoreUser {
                 mapOf(
                     "username" to users.username,
                     "fullName" to users.fullName,
+                    "bio" to users.bio,
                     "date" to users.date
                 )
             )

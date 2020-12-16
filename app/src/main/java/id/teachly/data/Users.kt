@@ -11,5 +11,7 @@ data class Users(
     val email: String? = null,
     val img: String? = null,
     val date: Timestamp? = null,
-    val interest: List<String>? = null
+    val interest: List<String>? = null,
+    val bio: String? = null,
+    val creator: Boolean? = false
 )
