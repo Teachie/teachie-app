@@ -13,6 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Teachly">
+        <activity
+            android:name=".ui.search.SearchActivity"
+            android:label="@string/title_activity_search"
+            android:theme="@style/Theme.Teachly.NoActionBar"></activity>
         <activity android:name=".ui.notification.NotificationActivity" />
         <activity android:name=".ui.saved.SavedActivity" />
         <activity android:name=".ui.detailtopic.DetailTopicActivity" />

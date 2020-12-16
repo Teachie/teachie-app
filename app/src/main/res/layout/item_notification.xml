@@ -64,13 +64,16 @@
         app:layout_constraintTop_toBottomOf="@+id/tvTime"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-    <Button
+    <com.google.android.material.chip.Chip
         android:id="@+id/btnFollow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        app:chipBackgroundColor="@color/white"
+        app:chipEndPadding="8dp"
         android:text="Ikuti"
-        android:textSize="12sp"
+        app:chipStartPadding="8dp"
+        app:chipStrokeColor="@color/primary"
+        app:chipStrokeWidth="2dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTime" />

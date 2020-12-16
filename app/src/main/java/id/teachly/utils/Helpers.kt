@@ -97,6 +97,18 @@ object Helpers {
             }
         }
 
+    fun SearchView.getQuerySubmit(onSearch: (textChange: String?) -> Unit) {
+        this.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                onSearch(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean = false
+        })
+    }
+
+
     private lateinit var pDialog: SweetAlertDialog
     fun showLoadingDialog(context: Context, message: String = "Loading") {
         pDialog = SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE).apply {
