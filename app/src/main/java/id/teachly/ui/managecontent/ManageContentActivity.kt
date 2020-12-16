@@ -1,12 +1,13 @@
 package id.teachly.ui.managecontent
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
 import id.teachly.databinding.ActionbarTopicBinding
 import id.teachly.databinding.ActivityManageContentBinding
 import id.teachly.ui.managecontent.fragment.ManageContentPagerAdapter
+import id.teachly.ui.publishsection.addspace.AddSpaceActivity
 import id.teachly.utils.Helpers.getPageSelected
 import id.teachly.utils.Helpers.hideView
 
@@ -46,9 +47,8 @@ class ManageContentActivity : AppCompatActivity() {
             if (!isSpaceAvailable()) tabs.hideView()
 
 
-            fab.setOnClickListener { view ->
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            fab.setOnClickListener {
+                startActivity(Intent(this@ManageContentActivity, AddSpaceActivity::class.java))
             }
         }
 
