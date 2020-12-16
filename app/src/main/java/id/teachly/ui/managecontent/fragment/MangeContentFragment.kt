@@ -15,7 +15,7 @@ import id.teachly.ui.saved.GroupingAdapter
 
 class MangeContentFragment : Fragment() {
 
-    private lateinit var pageViewModel: PageViewModel
+
     private lateinit var binding: FragmentManageContentBinding
     private var currentIndex = -1
 

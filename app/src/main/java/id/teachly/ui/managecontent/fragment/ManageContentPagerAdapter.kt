@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
-class SectionsPagerAdapter(
+class ManageContentPagerAdapter(
     private val context: Context,
     fm: FragmentManager,
     private val tabTitle: List<String>

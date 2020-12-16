@@ -6,7 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import id.teachly.databinding.ActionbarTopicBinding
 import id.teachly.databinding.ActivityManageContentBinding
-import id.teachly.ui.managecontent.fragment.SectionsPagerAdapter
+import id.teachly.ui.managecontent.fragment.ManageContentPagerAdapter
+import id.teachly.utils.Helpers.getPageSelected
 import id.teachly.utils.Helpers.hideView
 
 class ManageContentActivity : AppCompatActivity() {
@@ -30,10 +31,15 @@ class ManageContentActivity : AppCompatActivity() {
 
         if (isSpaceAvailable()) actionbarBinding.button.hideView()
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager, titles)
+        val sectionsPagerAdapter = ManageContentPagerAdapter(this, supportFragmentManager, titles)
 
         binding.apply {
             viewPager.adapter = sectionsPagerAdapter
+            hideFab()
+
+            viewPager.addOnPageChangeListener(getPageSelected {
+                if (it == 0) hideFab() else showFab()
+            })
 
             tabs.setupWithViewPager(viewPager)
 
@@ -54,4 +60,7 @@ class ManageContentActivity : AppCompatActivity() {
         if (item.itemId == android.R.id.home) finish()
         return super.onOptionsItemSelected(item)
     }
+
+    fun hideFab() = binding.fab.hide()
+    fun showFab() = binding.fab.show()
 }
