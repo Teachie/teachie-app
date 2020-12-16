@@ -13,7 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Teachly">
-        <activity android:name=".ui.createsection.CreateSectionActivity"></activity>
+        <activity
+            android:name=".ui.publishsection.addspace.AddSpaceActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.publishsection.choosespace.ChooseSpaceActivity" />
+        <activity
+            android:name=".ui.publishsection.PublishSectionActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.createsection.CreateSectionActivity" />
         <activity android:name=".ui.detaillist.DetailListActivity" />
         <activity
             android:name=".ui.search.SearchActivity"
