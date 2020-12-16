@@ -6,6 +6,5 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class DetailData(
     val title: String? = null,
-    val data: List<*>? = null,
     val type: String? = null
 ) : Parcelable
