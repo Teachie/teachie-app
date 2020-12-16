@@ -12,6 +12,11 @@
         android:title="@string/title_search" />
 
     <item
+        android:id="@+id/addSectionFragment"
+        android:icon="@drawable/ic_add_circle"
+        android:title="" />
+
+    <item
         android:id="@+id/discussFragment"
         android:icon="@drawable/ic_forum"
         android:title="@string/title_discussion" />

@@ -14,7 +14,10 @@ import id.teachly.R
 import id.teachly.databinding.ActionbarMainBinding
 import id.teachly.databinding.ActivityMainBinding
 import id.teachly.ui.notification.NotificationActivity
+import id.teachly.ui.search.SearchActivity
+import id.teachly.utils.Helpers.getQuerySubmit
 import id.teachly.utils.Helpers.hideView
+import id.teachly.utils.Helpers.showToast
 import id.teachly.utils.Helpers.showView
 import id.teachly.utils.Helpers.tag
 
@@ -34,11 +37,29 @@ class MainActivity : AppCompatActivity() {
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.homeFragment, R.id.exploreFragment, R.id.discussFragment, R.id.profileFragment
+                R.id.homeFragment,
+                R.id.exploreFragment,
+                0,
+                R.id.discussFragment,
+                R.id.profileFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.navView.setupWithNavController(navController)
+        binding.navView.apply {
+            setupWithNavController(navController)
+
+            if (!isContentCreator()) menu.findItem(R.id.addSectionFragment).isVisible = false
+
+            menu.findItem(R.id.addSectionFragment).setOnMenuItemClickListener {
+                showToast(this@MainActivity, "Add item")
+                return@setOnMenuItemClickListener true
+            }
+        }
+
+        actionbarBinding.searchView.getQuerySubmit {
+            startActivity(Intent(this, SearchActivity::class.java)
+                .apply { putExtra(SearchActivity.SEARCH_EXTRA, it) })
+        }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             Log.d(this.tag(), "label: ${destination.label}")
@@ -94,4 +115,6 @@ class MainActivity : AppCompatActivity() {
             else -> ""
         }
     }
+
+    private fun isContentCreator() = false
 }

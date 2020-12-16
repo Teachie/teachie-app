@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.viewpager.widget.ViewPager
 import cn.pedant.SweetAlert.SweetAlertDialog
 import coil.ImageLoader
 import coil.request.ImageRequest
@@ -215,5 +216,17 @@ object Helpers {
     fun Int.toDp(context: Context): Int = TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), context.resources.displayMetrics
     ).toInt()
+
+    fun getPageSelected(onChange: (Int) -> Unit) = object : ViewPager.OnPageChangeListener {
+        override fun onPageScrolled(
+            position: Int,
+            positionOffset: Float,
+            positionOffsetPixels: Int
+        ) {
+        }
+
+        override fun onPageSelected(position: Int) = onChange(position)
+        override fun onPageScrollStateChanged(state: Int) {}
+    }
 
 }
