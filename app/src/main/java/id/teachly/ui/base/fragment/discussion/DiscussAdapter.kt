@@ -34,10 +34,6 @@ class DiscussAdapter(
                 crossfade(true)
                 transformations(CircleCropTransformation())
             }
-            ivTopic.load(Helpers.dummyTopic) {
-                crossfade(true)
-                transformations(CircleCropTransformation())
-            }
             ivBanner.load(Helpers.dummyBg) {
                 crossfade(true)
                 transformations(RoundedCornersTransformation(10f))

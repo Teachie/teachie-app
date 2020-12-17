@@ -14,7 +14,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
-        return PlaceholderFragment.newInstance(position + 1)
+        return DetailUserFragment.newInstance(position + 1)
     }
 
     override fun getPageTitle(position: Int): CharSequence = TAB_TITLES[position]

@@ -1,6 +1,7 @@
 package id.teachly.ui.base.fragment.home
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import id.teachly.R
 import id.teachly.databinding.ItemTimelineBinding
+import id.teachly.ui.detailsection.DetailSectionActivity
 import id.teachly.utils.Helpers
 
 class HomeAdapter(
@@ -41,6 +43,10 @@ class HomeAdapter(
             ivBanner.load(Helpers.dummyBg) {
                 crossfade(true)
                 transformations(RoundedCornersTransformation(10f))
+            }
+
+            contentSection.setOnClickListener {
+                context.startActivity(Intent(context, DetailSectionActivity::class.java))
             }
         }
     }
