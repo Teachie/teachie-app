@@ -1,5 +1,6 @@
 package id.teachly.ui.base
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -12,6 +13,12 @@ import androidx.navigation.ui.setupWithNavController
 import id.teachly.R
 import id.teachly.databinding.ActionbarMainBinding
 import id.teachly.databinding.ActivityMainBinding
+import id.teachly.repo.remote.firebase.auth.Auth
+import id.teachly.repo.remote.firebase.firestore.FirestoreUser
+import id.teachly.ui.createsection.CreateSectionActivity
+import id.teachly.ui.notification.NotificationActivity
+import id.teachly.ui.search.SearchActivity
+import id.teachly.utils.Helpers.getQuerySubmit
 import id.teachly.utils.Helpers.hideView
 import id.teachly.utils.Helpers.showView
 import id.teachly.utils.Helpers.tag
@@ -20,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var actionbarBinding: ActionbarMainBinding
+    private var isContentCreator = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,15 +36,38 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
+        FirestoreUser.getUserById(Auth.getUserId() ?: "") {
+            if (it.creator != null) isContentCreator = it.creator
+            if (!isUserContentCreator()) binding.navView.menu.findItem(R.id.addSectionFragment).isVisible =
+                false
+        }
+
         val navController = findNavController(R.id.navHostFragment)
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.homeFragment, R.id.exploreFragment, R.id.discussFragment, R.id.profileFragment
+                R.id.homeFragment,
+                R.id.exploreFragment,
+                0,
+                R.id.discussFragment,
+                R.id.profileFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.navView.setupWithNavController(navController)
+        binding.navView.apply {
+            setupWithNavController(navController)
+
+
+            menu.findItem(R.id.addSectionFragment).setOnMenuItemClickListener {
+                startActivity(Intent(this@MainActivity, CreateSectionActivity::class.java))
+                return@setOnMenuItemClickListener true
+            }
+        }
+
+        actionbarBinding.searchView.getQuerySubmit {
+            startActivity(Intent(this, SearchActivity::class.java)
+                .apply { putExtra(SearchActivity.SEARCH_EXTRA, it) })
+        }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             Log.d(this.tag(), "label: ${destination.label}")
@@ -71,13 +102,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_notification -> {
-            }
+            R.id.action_notification -> startActivity(
+                Intent(
+                    this,
+                    NotificationActivity::class.java
+                )
+            )
         }
         return super.onOptionsItemSelected(item)
     }
 
-    fun getHintTitle(label: String): String {
+    private fun getHintTitle(label: String): String {
         return when (label) {
             "Explore" -> {
                 "Mau belajar apa hari ini?"
@@ -88,4 +123,6 @@ class MainActivity : AppCompatActivity() {
             else -> ""
         }
     }
+
+    private fun isUserContentCreator() = isContentCreator
 }

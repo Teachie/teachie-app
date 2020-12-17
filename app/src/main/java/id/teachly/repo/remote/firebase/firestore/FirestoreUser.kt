@@ -37,7 +37,7 @@ object FirestoreUser {
             .document(userId)
             .addSnapshotListener { value, error ->
                 if (error != null) {
-                    Log.d(TAG, "getUserById: failed = ${error.message}")
+                    Log.d(TAG, "getUserById: failed error = ${error.message}")
                 }
 
                 if (value != null && value.exists()) {
@@ -45,6 +45,7 @@ object FirestoreUser {
                     onResult(value.toObject(Users::class.java) ?: Users())
                 } else {
                     Log.d(TAG, "getUserById: failed = ${error?.message}")
+                    onResult(Users())
                 }
             }
     }
@@ -68,6 +69,7 @@ object FirestoreUser {
                 mapOf(
                     "username" to users.username,
                     "fullName" to users.fullName,
+                    "bio" to users.bio,
                     "date" to users.date
                 )
             )
@@ -75,6 +77,17 @@ object FirestoreUser {
             .addOnFailureListener {
                 isSuccess(true)
                 Log.d(TAG, "updateUser: failed = ${it.message}")
+            }
+    }
+
+    fun updateStatusCreator(isSuccess: (Boolean) -> Unit) {
+        FirestoreInstance.instance.collection(Const.Collection.USER)
+            .document(Auth.getUserId() ?: "")
+            .update("creator", true)
+            .addOnSuccessListener { isSuccess(true) }
+            .addOnFailureListener {
+                isSuccess(false)
+                Log.d(TAG, "updateStatusCreator: failed = ${it.message}")
             }
     }
 }

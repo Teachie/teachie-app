@@ -10,12 +10,14 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.viewpager.widget.ViewPager
 import cn.pedant.SweetAlert.SweetAlertDialog
 import coil.ImageLoader
 import coil.request.ImageRequest
@@ -57,6 +59,7 @@ object Helpers {
             "Tanggal lahir tidak boleh kosong",
             "Format username salah",
             "Username sudah digunakan",
+            "Bio tidak boleh kosong"
         )
 
     fun Activity.tag(): String {
@@ -95,6 +98,18 @@ object Helpers {
                 return false
             }
         }
+
+    fun SearchView.getQuerySubmit(onSearch: (textChange: String?) -> Unit) {
+        this.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                onSearch(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean = false
+        })
+    }
+
 
     private lateinit var pDialog: SweetAlertDialog
     fun showLoadingDialog(context: Context, message: String = "Loading") {
@@ -198,5 +213,42 @@ object Helpers {
 
     fun String.capitalizeWords(): String =
         split(" ").joinToString(" ") { it.capitalize(Locale.getDefault()) }
+
+    fun Int.toDp(context: Context): Int = TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), context.resources.displayMetrics
+    ).toInt()
+
+    fun getPageSelected(onChange: (Int) -> Unit) = object : ViewPager.OnPageChangeListener {
+        override fun onPageScrolled(
+            position: Int,
+            positionOffset: Float,
+            positionOffsetPixels: Int
+        ) {
+        }
+
+        override fun onPageSelected(position: Int) = onChange(position)
+        override fun onPageScrollStateChanged(state: Int) {}
+    }
+
+    fun showWarningDialog(
+        context: Context,
+        onConfirm: (confirm: Boolean) -> Unit
+    ) {
+        pDialog = SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE).apply {
+            titleText = "Apakah kamu sudah siap berbagi?"
+            confirmText = "Iya"
+            cancelText = "Belum"
+            setConfirmClickListener {
+                it.dismissWithAnimation()
+                onConfirm(true)
+            }
+            setCancelClickListener {
+                it.dismissWithAnimation()
+                onConfirm(false)
+            }
+            setCancelable(true)
+            show()
+        }
+    }
 
 }

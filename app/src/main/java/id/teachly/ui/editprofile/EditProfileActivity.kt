@@ -45,9 +45,11 @@ class EditProfileActivity : AppCompatActivity() {
                 edtFullName.setText(users.fullName)
                 edtUsername.setText(users.username)
                 edtDate.setText(users.date?.formatDate(Const.DateFormat.SIMPLE))
+                if (users.bio != null) edtBio.setText(users.bio)
 
                 edtUsername.addTextChangedListener(Helpers.getTextWatcher { validateError() })
                 edtFullName.addTextChangedListener(Helpers.getTextWatcher { validateError() })
+                edtBio.addTextChangedListener(Helpers.getTextWatcher { validateError() })
                 edtDate.addTextChangedListener(Helpers.getTextWatcher { validateError() })
 
                 edtDate.setOnClickListener {
@@ -106,6 +108,7 @@ class EditProfileActivity : AppCompatActivity() {
                 Users(
                     username = edtUsername.text.toString(),
                     fullName = edtFullName.text.toString(),
+                    bio = if (edtBio.text.toString().isNotEmpty()) edtBio.text.toString() else null,
                     date = edtDate.text.toString().toTimeStamp(Const.DateFormat.SIMPLE)
                 )
             ) {
@@ -133,7 +136,7 @@ class EditProfileActivity : AppCompatActivity() {
     private fun thereIsAChange(users: Users): Boolean {
         binding.apply {
             return (imgUrl.toString() != users.img || edtFullName.text.toString() != users.fullName
-                    || isUsernameChanged(users)
+                    || isUsernameChanged(users) || edtBio.text.toString() != users.bio
                     || edtDate.text.toString() != users.date?.formatDate(Const.DateFormat.SIMPLE))
         }
     }
@@ -179,7 +182,7 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun validateError() {
         binding.apply {
-            Helpers.validateError(tilFullName, tilUsername, tilDate)
+            Helpers.validateError(tilFullName, tilUsername, tilDate, tilBio)
         }
     }
 

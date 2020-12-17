@@ -30,4 +30,20 @@
     <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
     </style>
+
+    <style name="Theme.Teachly.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="ItemsTouchable">
+        <item name="android:clickable">true</item>
+        <item name="android:drawSelectorOnTop">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <style name="Theme.Teachly.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Teachly.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

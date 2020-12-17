@@ -16,8 +16,15 @@ import id.teachly.repo.remote.firebase.auth.Auth
 import id.teachly.repo.remote.firebase.firestore.FirestoreCategory
 import id.teachly.repo.remote.firebase.firestore.FirestoreUser
 import id.teachly.ui.editprofile.EditProfileActivity
+import id.teachly.ui.managecontent.ManageContentActivity
+import id.teachly.ui.saved.SavedActivity
 import id.teachly.ui.welcome.WelcomeActivity
 import id.teachly.utils.Helpers
+import id.teachly.utils.Helpers.hideLoadingDialog
+import id.teachly.utils.Helpers.hideView
+import id.teachly.utils.Helpers.showLoadingDialog
+import id.teachly.utils.Helpers.showView
+import id.teachly.utils.Helpers.showWarningDialog
 
 class ProfileFragment : Fragment() {
 
@@ -44,6 +51,15 @@ class ProfileFragment : Fragment() {
 
                 tvName.text = it.fullName
                 tvUsername.text = buildString { append("@").append(it.username) }
+                if (it.bio != null) tvBio.apply {
+                    text = it.bio
+                    showView()
+                }
+
+                if (it.creator == false || it.creator == null) contentManage.hideView()
+                else contentBeCreator.hideView()
+
+                chipGroup.removeAllViews()
 
                 FirestoreCategory.getCategoryByName(it.interest ?: listOf()) { category ->
                     category.forEach {
@@ -63,6 +79,35 @@ class ProfileFragment : Fragment() {
                             EditProfileActivity::class.java
                         )
                     )
+                }
+
+                contentSaved.setOnClickListener {
+                    requireContext().startActivity(
+                        Intent(
+                            requireContext(),
+                            SavedActivity::class.java
+                        )
+                    )
+                }
+
+                contentManage.setOnClickListener {
+                    requireContext().startActivity(
+                        Intent(
+                            requireContext(),
+                            ManageContentActivity::class.java
+                        )
+                    )
+                }
+                contentBeCreator.setOnClickListener {
+                    showWarningDialog(requireContext()) { confirm ->
+                        if (confirm) {
+                            hideLoadingDialog()
+                            showLoadingDialog(requireContext())
+                            FirestoreUser.updateStatusCreator {
+                                requireActivity().finish()
+                            }
+                        }
+                    }
                 }
             }
 

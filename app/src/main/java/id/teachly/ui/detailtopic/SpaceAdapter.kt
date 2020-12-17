@@ -12,10 +12,12 @@ import id.teachly.R
 import id.teachly.databinding.ItemSpaceBinding
 import id.teachly.utils.DummyData
 import id.teachly.utils.Helpers
+import id.teachly.utils.Helpers.toDp
 
 class SpaceAdapter(
     private val context: Context,
-    private val size: Int
+    private val size: Int,
+    private val type: Int? = 1
 ) : RecyclerView.Adapter<SpaceAdapter.SpaceViewHolder>() {
 
     class SpaceViewHolder(view: View) : RecyclerView.ViewHolder(view)
@@ -30,6 +32,11 @@ class SpaceAdapter(
 
     override fun onBindViewHolder(holder: SpaceViewHolder, position: Int) {
         binding.apply {
+            if (type != 1) contentSpace.layoutParams = ViewGroup.LayoutParams(
+                320.toDp(context),
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
             ivAva.load(Helpers.dummyAva) {
                 transformations(CircleCropTransformation())
                 crossfade(true)
