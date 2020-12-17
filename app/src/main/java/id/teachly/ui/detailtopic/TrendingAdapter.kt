@@ -1,6 +1,7 @@
 package id.teachly.ui.detailtopic
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import id.teachly.R
 import id.teachly.databinding.ItemTrendingBinding
+import id.teachly.ui.detailsection.DetailSectionActivity
 import id.teachly.utils.Helpers
 
 class TrendingAdapter(
@@ -35,7 +37,7 @@ class TrendingAdapter(
                 transformations(RoundedCornersTransformation(8f))
             }
 
-            ivSpace.load(Helpers.dummyAva) {
+            ivSpace.load(Helpers.dummyTopic) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
             }
@@ -43,6 +45,10 @@ class TrendingAdapter(
             ivAva.load(Helpers.dummyAva) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
+            }
+
+            contentSection.setOnClickListener {
+                context.startActivity(Intent(context, DetailSectionActivity::class.java))
             }
         }
     }
