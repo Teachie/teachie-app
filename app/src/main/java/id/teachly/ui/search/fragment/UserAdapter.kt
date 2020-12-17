@@ -1,6 +1,7 @@
 package id.teachly.ui.search.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import id.teachly.R
 import id.teachly.databinding.ItemUserBinding
+import id.teachly.ui.detailuser.DetailUserActivity
 import id.teachly.utils.DummyData
 
 class UserAdapter(
@@ -27,9 +29,14 @@ class UserAdapter(
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        binding.ivAva.load(DummyData.getImg((0..1).random(), (0..3).random())) {
-            crossfade(true)
-            transformations(CircleCropTransformation())
+        binding.apply {
+            ivAva.load(DummyData.getImg((0..1).random(), (0..3).random())) {
+                crossfade(true)
+                transformations(CircleCropTransformation())
+            }
+            contentUser.setOnClickListener {
+                context.startActivity(Intent(context,DetailUserActivity::class.java))
+            }
         }
     }
 

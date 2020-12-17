@@ -21,6 +21,10 @@
             android:name=".ui.publishsection.PublishSectionActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.createsection.CreateSectionActivity" />
+        <activity
+            android:name=".ui.detailuser.DetailUserActivity"
+            android:label="@string/title_activity_detail_user"
+            android:theme="@style/Theme.Teachly.NoActionBar"></activity>
         <activity android:name=".ui.detaillist.DetailListActivity" />
         <activity
             android:name=".ui.search.SearchActivity"
