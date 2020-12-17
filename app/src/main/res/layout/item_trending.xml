@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/ItemsTouchable"
     android:layout_width="320dp"
+    android:id="@+id/contentSection"
     android:layout_height="wrap_content"
     app:cardCornerRadius="8dp"
     app:cardUseCompatPadding="true">

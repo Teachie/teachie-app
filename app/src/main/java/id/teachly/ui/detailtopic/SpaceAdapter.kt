@@ -1,6 +1,7 @@
 package id.teachly.ui.detailtopic
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import id.teachly.R
 import id.teachly.databinding.ItemSpaceBinding
+import id.teachly.ui.detailuser.DetailUserActivity
 import id.teachly.utils.DummyData
 import id.teachly.utils.Helpers
 import id.teachly.utils.Helpers.toDp
@@ -53,6 +55,10 @@ class SpaceAdapter(
             ivSectionThree.load(DummyData.getImg(0, 2)) {
                 transformations(RoundedCornersTransformation(8f))
                 crossfade(true)
+            }
+
+            contentSpace.setOnClickListener {
+                context.startActivity(Intent(context, DetailUserActivity::class.java))
             }
         }
     }
