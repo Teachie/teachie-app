@@ -140,14 +140,14 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView12"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvTotalStory"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView11"
+                    app:layout_constraintTop_toTopOf="@+id/tvNameSpace"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <TextView
-                    android:id="@+id/textView11"
+                    android:id="@+id/tvNameSpace"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -158,13 +158,13 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView12"
+                    android:id="@+id/tvTotalStory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="120 Post"
                     android:textSize="12sp"
-                    app:layout_constraintStart_toStartOf="@+id/textView11"
-                    app:layout_constraintTop_toBottomOf="@+id/textView11" />
+                    app:layout_constraintStart_toStartOf="@+id/tvNameSpace"
+                    app:layout_constraintTop_toBottomOf="@+id/tvNameSpace" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 

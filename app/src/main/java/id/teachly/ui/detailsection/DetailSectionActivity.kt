@@ -13,11 +13,11 @@ import id.teachly.data.Users
 import id.teachly.databinding.ActionbarSectionBinding
 import id.teachly.databinding.ActivityDetailSectionBinding
 import id.teachly.databinding.LayoutScrollingSectionBinding
+import id.teachly.repo.remote.firebase.firestore.FirestoreSpace
 import id.teachly.repo.remote.firebase.firestore.FirestoreUser
 import id.teachly.ui.detaildiscussion.DetailDiscussionActivity
 import id.teachly.ui.search.fragment.UserAdapter
 import id.teachly.utils.Const
-import id.teachly.utils.Helpers
 import id.teachly.utils.Helpers.decodeContent
 import id.teachly.utils.Helpers.formatDate
 import id.teachly.utils.Helpers.hideView
@@ -43,12 +43,9 @@ class DetailSectionActivity : AppCompatActivity() {
 
         val story = intent.getParcelableExtra<Story>(EXTRA_CONTENT)
 
-        if (story?.spaceId == null) actionBarBinding.contentMain.hideView()
 
-        actionBarBinding.imageView3.load(Helpers.dummyTopic) {
-            crossfade(true)
-            transformations(CircleCropTransformation())
-        }
+
+
 
         contentBinding.apply {
             FirestoreUser.getUserById(story?.writerId ?: "") { users ->
@@ -66,9 +63,28 @@ class DetailSectionActivity : AppCompatActivity() {
                     img = users.img
                 )
 
-                rvWriter.apply {
-                    itemAnimator = DefaultItemAnimator()
-                    adapter = UserAdapter(this@DetailSectionActivity, listOf(writer))
+                if (story?.spaceId == null) {
+                    actionBarBinding.contentMain.hideView()
+                    populateDataContent(listOf(writer))
+                } else {
+                    FirestoreSpace.getSpaceById(story.spaceId) { _, space ->
+                        actionBarBinding.apply {
+                            ivAva.load(space.img) {
+                                crossfade(true)
+                                transformations(CircleCropTransformation())
+                            }
+                            tvName.text = space.title
+                            tvDesc.text = space.desc
+                        }
+
+                        val space = Users(
+                            fullName = "Bagian dari",
+                            username = space.title,
+                            bio = space.desc,
+                            img = space.img
+                        )
+                        populateDataContent(listOf(space, writer))
+                    }
                 }
             }
 
@@ -91,7 +107,10 @@ class DetailSectionActivity : AppCompatActivity() {
         }
 
         binding.fabDiscussion.setOnClickListener {
-            startActivity(Intent(this, DetailDiscussionActivity::class.java))
+            startActivity(
+                Intent(this, DetailDiscussionActivity::class.java)
+                    .putExtra(DetailDiscussionActivity.EXTRA_DISCUSSION, story?.storyId)
+            )
         }
 
     }
@@ -99,6 +118,16 @@ class DetailSectionActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) finish()
         return super.onOptionsItemSelected(item)
+    }
+
+
+    private fun populateDataContent(data: List<Users>) {
+        contentBinding.apply {
+            rvWriter.apply {
+                itemAnimator = DefaultItemAnimator()
+                adapter = UserAdapter(this@DetailSectionActivity, data)
+            }
+        }
     }
 
     companion object {

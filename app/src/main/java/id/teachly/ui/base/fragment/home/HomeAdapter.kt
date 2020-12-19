@@ -13,10 +13,10 @@ import coil.transform.RoundedCornersTransformation
 import id.teachly.R
 import id.teachly.data.Story
 import id.teachly.databinding.ItemTimelineBinding
+import id.teachly.repo.remote.firebase.firestore.FirestoreSpace
 import id.teachly.repo.remote.firebase.firestore.FirestoreUser
 import id.teachly.ui.detailsection.DetailSectionActivity
 import id.teachly.utils.Const
-import id.teachly.utils.Helpers
 import id.teachly.utils.Helpers.decodeContent
 import id.teachly.utils.Helpers.formatDate
 import id.teachly.utils.Helpers.hideView
@@ -51,12 +51,19 @@ class HomeAdapter(
             }
 
             if (content.spaceId == null) contentSpace.hideView()
-
-
-            ivTopic.load(Helpers.dummyTopic) {
-                crossfade(true)
-                transformations(CircleCropTransformation())
+            else {
+                FirestoreSpace.getSpaceById(content.spaceId) { b, space ->
+                    tvNameSpace.text = space.title
+                    tvTotalStory.text = "${space.section} Cerita"
+                    ivTopic.load(space.img) {
+                        crossfade(true)
+                        transformations(CircleCropTransformation())
+                    }
+                }
             }
+
+
+
             if (content.thumbnail != null) {
                 ivBanner.load(content.thumbnail) {
                     crossfade(true)

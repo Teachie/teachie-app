@@ -2,6 +2,7 @@ package id.teachly.ui.publishsection.addspace
 
 import android.net.Uri
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -155,5 +156,10 @@ class AddSpaceActivity : AppCompatActivity(), DialogInterestImpl {
                 })
         }
         binding.chipGroup.showView()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) finish()
+        return super.onOptionsItemSelected(item)
     }
 }

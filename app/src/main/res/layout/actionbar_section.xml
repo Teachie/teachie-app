@@ -7,7 +7,7 @@
     android:layout_height="?attr/actionBarSize">
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/ivAva"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="8dp"
@@ -18,29 +18,33 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/textView51"
+        android:id="@+id/tvName"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
+        android:ellipsize="end"
         android:gravity="bottom"
+        android:maxLines="1"
         android:text="Android Tips"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textView52"
+        app:layout_constraintBottom_toTopOf="@+id/tvDesc"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintStart_toEndOf="@+id/ivAva"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView52"
+        android:id="@+id/tvDesc"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="We talk about anything in Android"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView51" />
+        app:layout_constraintStart_toEndOf="@+id/ivAva"
+        app:layout_constraintTop_toBottomOf="@+id/tvName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

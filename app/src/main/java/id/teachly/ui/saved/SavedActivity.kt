@@ -22,7 +22,7 @@ class SavedActivity : AppCompatActivity() {
 
         binding.rvSaved.apply {
             itemAnimator = DefaultItemAnimator()
-            adapter = GroupingAdapter(this@SavedActivity, 7)
+            adapter = GroupingAdapter(this@SavedActivity, listOf())
         }
     }
 

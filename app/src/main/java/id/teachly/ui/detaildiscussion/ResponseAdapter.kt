@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
 import id.teachly.R
+import id.teachly.data.Response
 import id.teachly.databinding.ItemCommentBinding
-import id.teachly.utils.DummyData
+import id.teachly.repo.remote.firebase.firestore.FirestoreUser
+import id.teachly.utils.Const
+import id.teachly.utils.Helpers.formatDate
 
 class ResponseAdapter(
     private val context: Context,
-    private val size: Int
+    private val data: List<Response>
 ) : RecyclerView.Adapter<ResponseAdapter.ResponseViewHolder>() {
 
     class ResponseViewHolder(view: View) : RecyclerView.ViewHolder(view)
@@ -27,12 +30,21 @@ class ResponseAdapter(
     }
 
     override fun onBindViewHolder(holder: ResponseViewHolder, position: Int) {
-        binding.imageView14.load(DummyData.getImg((0..1).random(), (0..3).random())) {
-            crossfade(true)
-            transformations(CircleCropTransformation())
+        val response = data[position]
+
+        binding.apply {
+            FirestoreUser.getUserById(response.writerId ?: "") {
+                imageView14.load(it.img) {
+                    crossfade(true)
+                    transformations(CircleCropTransformation())
+                }
+                tvName.text = it.fullName
+            }
+            tvTime.text = response.time?.formatDate(Const.DateFormat.SHORT)
+            tvComment.text = response.comment
         }
     }
 
-    override fun getItemCount(): Int = size
+    override fun getItemCount(): Int = data.size
 
 }

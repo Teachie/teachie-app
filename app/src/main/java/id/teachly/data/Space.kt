@@ -1,7 +1,10 @@
 package id.teachly.data
 
+import android.os.Parcelable
 import com.google.firebase.firestore.DocumentId
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Space(
     @DocumentId
     val spaceId: String? = null,
@@ -11,4 +14,4 @@ data class Space(
     val img: String? = null,
     val category: List<String>? = null,
     val section: Int? = 0
-)
+) : Parcelable

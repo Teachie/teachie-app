@@ -35,7 +35,7 @@ class DetailListActivity : AppCompatActivity() {
                 }
                 Const.List.SPACE -> SpaceAdapter(this@DetailListActivity, 10)
                 Const.List.USER -> UserAdapter(this@DetailListActivity, listOf())
-                else -> DiscussAdapter(this@DetailListActivity, 10)
+                else -> DiscussAdapter(this@DetailListActivity, listOf())
             }
         }
 

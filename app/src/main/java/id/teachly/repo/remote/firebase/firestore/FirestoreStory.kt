@@ -8,13 +8,13 @@ object FirestoreStory {
 
     const val TAG = "FirestoreStory"
 
-    fun publishNewStory(story: Story, isSuccess: (Boolean) -> Unit) {
-        FirestoreInstance.instance.collection(Const.Collection.STORY)
+    fun publishNewStory(story: Story, isSuccess: (Boolean, id: String) -> Unit) {
+        val ref = FirestoreInstance.instance.collection(Const.Collection.STORY)
             .document()
-            .set(story)
-            .addOnSuccessListener { isSuccess(true) }
+        ref.set(story)
+            .addOnSuccessListener { isSuccess(true, ref.id) }
             .addOnFailureListener {
-                isSuccess(false)
+                isSuccess(false, "")
                 Log.d(TAG, "publishNewStory: filed = ${it.message}")
             }
     }

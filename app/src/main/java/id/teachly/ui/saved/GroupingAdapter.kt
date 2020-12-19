@@ -10,14 +10,15 @@ import coil.load
 import coil.transform.RoundedCornersTransformation
 import id.teachly.R
 import id.teachly.data.DetailData
+import id.teachly.data.Grouping
 import id.teachly.databinding.ItemGropingBinding
 import id.teachly.ui.detaillist.DetailListActivity
 import id.teachly.utils.Const
-import id.teachly.utils.Helpers
+import id.teachly.utils.Helpers.showView
 
 class GroupingAdapter(
     private val context: Context,
-    private val size: Int
+    private val dataGrouping: List<Grouping>
 ) : RecyclerView.Adapter<GroupingAdapter.GroupingViewHolder>() {
 
     class GroupingViewHolder(view: View) : RecyclerView.ViewHolder(view)
@@ -31,11 +32,21 @@ class GroupingAdapter(
     }
 
     override fun onBindViewHolder(holder: GroupingViewHolder, position: Int) {
+        val grouping = dataGrouping[position]
+
         binding.apply {
-            ivHighlight.load(Helpers.dummyBg) {
+            ivHighlight.load(grouping.img) {
                 crossfade(true)
                 transformations(RoundedCornersTransformation(8f))
             }
+            tvName.text = grouping.title
+            grouping.desc.let {
+                if (it != null) tvDesc.apply {
+                    text = it
+                    showView()
+                }
+            }
+            tvSection.text = buildString { append(grouping.section).append(" Cerita") }
             contentGrouping.setOnClickListener {
                 context.startActivity(
                     Intent(context, DetailListActivity::class.java)
@@ -48,5 +59,5 @@ class GroupingAdapter(
         }
     }
 
-    override fun getItemCount(): Int = size
+    override fun getItemCount(): Int = dataGrouping.size
 }

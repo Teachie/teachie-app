@@ -5,20 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.teachly.R
+import id.teachly.data.Space
+import id.teachly.data.Story
 import id.teachly.databinding.FragmentManageContentBinding
-import id.teachly.repo.remote.firebase.auth.Auth
-import id.teachly.repo.remote.firebase.firestore.FirestoreStory
 import id.teachly.ui.base.fragment.home.HomeAdapter
+import id.teachly.ui.managecontent.ManageContentViewModel
 import id.teachly.ui.saved.GroupingAdapter
+import id.teachly.utils.Helpers.toGrouping
 
 class MangeContentFragment : Fragment() {
 
 
     private lateinit var binding: FragmentManageContentBinding
+    private val model: ManageContentViewModel by viewModels()
     private var currentIndex = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,25 +41,34 @@ class MangeContentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentManageContentBinding.bind(view)
 
-        binding.rvManageSection.apply {
-            layoutManager =
-                if (currentIndex == 1) LinearLayoutManager(requireContext()) else GridLayoutManager(
-                    requireContext(),
-                    2
-                )
-            itemAnimator = DefaultItemAnimator()
-
-            FirestoreStory.getStoryByUserId(Auth.getCurrentUser()?.uid ?: "") {
-                adapter =
-                    if (currentIndex == 1) HomeAdapter(requireContext(), it) else GroupingAdapter(
-                        requireContext(),
-                        5
-                    )
-            }
-
+        if (currentIndex == 1) {
+            model.loadStories()
+            model.stories.observe(viewLifecycleOwner, {
+                populateDataStories(it)
+            })
+        } else {
+            model.loadSpace()
+            model.space.observe(viewLifecycleOwner, {
+                populateDataSpace(it)
+            })
         }
 
+    }
 
+    private fun populateDataSpace(space: List<Space>?) {
+        binding.rvManageSection.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            itemAnimator = DefaultItemAnimator()
+            adapter = GroupingAdapter(requireContext(), space?.toGrouping() ?: listOf())
+        }
+    }
+
+    private fun populateDataStories(stories: List<Story>?) {
+        binding.rvManageSection.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            itemAnimator = DefaultItemAnimator()
+            adapter = HomeAdapter(requireContext(), stories ?: listOf())
+        }
     }
 
     companion object {

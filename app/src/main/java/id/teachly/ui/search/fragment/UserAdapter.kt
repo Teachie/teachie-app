@@ -11,7 +11,10 @@ import coil.transform.CircleCropTransformation
 import id.teachly.R
 import id.teachly.data.Users
 import id.teachly.databinding.ItemUserBinding
+import id.teachly.repo.remote.firebase.auth.Auth
+import id.teachly.repo.remote.firebase.firestore.FirestoreUser
 import id.teachly.ui.detailuser.DetailUserActivity
+import id.teachly.utils.Helpers.hideView
 
 class UserAdapter(
     private val context: Context,
@@ -30,7 +33,18 @@ class UserAdapter(
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = dataUsers[position]
+        var type = 0
         binding.apply {
+
+            if (user.fullName == "Bagian dari") {
+                type = 1
+                btnFollow.hideView()
+            }
+
+            FirestoreUser.getUserById(Auth.getCurrentUser()?.uid ?: "") {
+                if (user.username == it.fullName) btnFollow.hideView()
+            }
+
             ivAva.load(user.img) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
@@ -40,7 +54,11 @@ class UserAdapter(
             tvBio.text = user.bio ?: ""
 
             contentUser.setOnClickListener {
-                context.startActivity(Intent(context, DetailUserActivity::class.java))
+                context.startActivity(Intent(context, DetailUserActivity::class.java)
+                    .apply {
+                        putExtra(DetailUserActivity.EXTRA_USER, user)
+                        putExtra(DetailUserActivity.EXTRA_TYPE, type)
+                    })
             }
         }
     }

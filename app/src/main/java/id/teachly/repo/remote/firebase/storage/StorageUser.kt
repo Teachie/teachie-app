@@ -40,4 +40,15 @@ object StorageUser {
         }
         StorageInstance.uploadPhoto(img, path) { b, link -> isSuccess(b, link) }
     }
+
+    fun storeImgDiscussion(img: Uri, isSuccess: (Boolean, url: String) -> Unit) {
+        val path = buildString {
+            append(Const.Storage.IMAGE)
+            append(Const.Storage.DISCUSSION)
+            append("${Auth.getUserId()}/")
+            append(Timestamp.now())
+            append(Const.Storage.JPG)
+        }
+        StorageInstance.uploadPhoto(img, path) { b, link -> isSuccess(b, link) }
+    }
 }

@@ -19,7 +19,7 @@ object FirestoreSpace {
             }
     }
 
-    fun geSpaceByUserId(uid: String, isSuccess: (Boolean, List<Space>) -> Unit) {
+    fun getSpaceByUserId(uid: String, isSuccess: (Boolean, List<Space>) -> Unit) {
         FirestoreInstance.instance.collection(Const.Collection.SPACE)
             .whereEqualTo("userId", uid)
             .addSnapshotListener { value, error ->
@@ -32,5 +32,24 @@ object FirestoreSpace {
                     isSuccess(false, listOf())
                 }
             }
+    }
+
+    fun getSpaceById(spaceId: String, isSuccess: (Boolean, Space) -> Unit) {
+        FirestoreInstance.instance.collection(Const.Collection.SPACE)
+            .document(spaceId)
+            .get()
+            .addOnSuccessListener { isSuccess(true, it.toObject(Space::class.java) ?: Space()) }
+            .addOnFailureListener {
+                isSuccess(false, Space())
+                Log.d(TAG, "getSpaceById: failed = ${it.message}")
+            }
+    }
+
+    fun updateSpaceById(space: Space) {
+        FirestoreInstance.instance.collection(Const.Collection.SPACE)
+            .document(space.spaceId ?: "")
+            .update("section", space.section?.plus(1))
+            .addOnSuccessListener { Log.d(TAG, "updateSpaceById: success") }
+            .addOnFailureListener { Log.d(TAG, "updateSpaceById: failed") }
     }
 }

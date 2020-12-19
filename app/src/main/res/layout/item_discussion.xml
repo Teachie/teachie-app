@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/ItemsTouchable"
     app:cardCornerRadius="8dp"
+    android:id="@+id/contentMain"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardUseCompatPadding="true">
@@ -18,14 +19,14 @@
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="@+id/textView20"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTime"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView18"
+            app:layout_constraintTop_toTopOf="@+id/tvFullName"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/textView18"
+            android:id="@+id/tvFullName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -35,30 +36,30 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/ivAva"
-            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+            app:layout_constraintTop_toBottomOf="@+id/tvDesc" />
 
         <TextView
-            android:id="@+id/textView19"
+            android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="derysudrajat"
             android:textColor="@color/black"
-            app:layout_constraintStart_toEndOf="@+id/textView18"
-            app:layout_constraintTop_toTopOf="@+id/textView18" />
+            app:layout_constraintStart_toEndOf="@+id/tvFullName"
+            app:layout_constraintTop_toTopOf="@+id/tvFullName" />
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="24 menit yang lalu"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/ivAva"
-            app:layout_constraintTop_toBottomOf="@+id/textView18" />
+            app:layout_constraintTop_toBottomOf="@+id/tvFullName" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -76,18 +77,20 @@
             android:id="@+id/ivBanner"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:paddingStart="8dp"
             android:layout_marginStart="8dp"
-            android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView17"
+            android:paddingTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvDesc"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView16"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/textView17"
+            android:id="@+id/tvDesc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:ellipsize="end"
@@ -97,28 +100,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/ivBanner"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup4"
+            android:id="@+id/chipGroup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/checkBox8"
-            app:layout_constraintEnd_toStartOf="@+id/checkBox8"
+            app:layout_constraintBottom_toBottomOf="@+id/cbDiscussion"
+            app:layout_constraintEnd_toStartOf="@+id/cbDiscussion"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/checkBox8">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Android" />
-        </com.google.android.material.chip.ChipGroup>
+            app:layout_constraintTop_toTopOf="@+id/cbDiscussion" />
 
         <CheckBox
-            android:id="@+id/checkBox8"
+            android:id="@+id/cbDiscussion"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -131,6 +127,6 @@
             android:textIsSelectable="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView20" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTime" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

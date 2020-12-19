@@ -10,7 +10,7 @@ data class Discussion(
     val storyId: String? = null,
     val title: String? = null,
     val question: String? = null,
-    val img: String? = null,
+    var img: String? = null,
     val category: List<String>? = null,
     val time: Timestamp? = Timestamp.now(),
     val responses: Int? = 0,
