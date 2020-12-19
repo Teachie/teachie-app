@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.teachly.R
 import id.teachly.databinding.FragmentManageContentBinding
+import id.teachly.repo.remote.firebase.auth.Auth
+import id.teachly.repo.remote.firebase.firestore.FirestoreStory
 import id.teachly.ui.base.fragment.home.HomeAdapter
 import id.teachly.ui.saved.GroupingAdapter
 
@@ -42,11 +44,18 @@ class MangeContentFragment : Fragment() {
                     2
                 )
             itemAnimator = DefaultItemAnimator()
-            adapter = if (currentIndex == 1) HomeAdapter(requireContext(), 10) else GroupingAdapter(
-                requireContext(),
-                5
-            )
+
+            FirestoreStory.getStoryByUserId(Auth.getCurrentUser()?.uid ?: "") {
+                adapter =
+                    if (currentIndex == 1) HomeAdapter(requireContext(), it) else GroupingAdapter(
+                        requireContext(),
+                        5
+                    )
+            }
+
         }
+
+
     }
 
     companion object {

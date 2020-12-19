@@ -5,30 +5,43 @@ package id.teachly.utils
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.ScaleDrawable
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
+import android.text.Html
 import android.text.TextWatcher
+import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.viewpager.widget.ViewPager
 import cn.pedant.SweetAlert.SweetAlertDialog
+import coil.Coil
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import coil.size.Scale
 import coil.transform.CircleCropTransformation
+import coil.transform.RoundedCornersTransformation
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Timestamp
 import id.teachly.R
+import id.teachly.data.StoryContent
+import id.teachly.utils.Helpers.loadDrawable
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -166,6 +179,56 @@ object Helpers {
         return (loader.execute(request) as SuccessResult).drawable
     }
 
+
+    class CoilImageGetter(
+        val textView: TextView,
+        private val imageLoader: ImageLoader = Coil.imageLoader(textView.context),
+        private val sourceModifier: ((source: String) -> String)? = null
+    ) : Html.ImageGetter {
+
+        override fun getDrawable(source: String): Drawable {
+            val finalSource = sourceModifier?.invoke(source) ?: source
+
+            val drawablePlaceholder = DrawablePlaceHolder()
+            imageLoader.enqueue(
+                ImageRequest.Builder(textView.context)
+                    .transformations(RoundedCornersTransformation(8f))
+                    .data(finalSource).apply {
+                        target { drawable ->
+                            drawablePlaceholder.updateDrawable(drawable)
+                            textView.text = textView.text
+                        }
+                    }.build()
+            )
+            return drawablePlaceholder
+        }
+
+        @Suppress("DEPRECATION")
+        inner class DrawablePlaceHolder : BitmapDrawable() {
+
+            private var drawable: Drawable? = null
+
+            override fun draw(canvas: Canvas) {
+                drawable?.draw(canvas)
+            }
+
+            fun updateDrawable(drawable: Drawable) {
+                val displayMetrics = DisplayMetrics()
+                (textView.context as Activity).windowManager.defaultDisplay.getMetrics(
+                    displayMetrics
+                )
+                val heightA = displayMetrics.heightPixels
+                val widthA = displayMetrics.widthPixels
+                val scaleDrawable = ScaleDrawable(drawable, 0, 2f, 1f).drawable
+                this.drawable = scaleDrawable
+                val width = scaleDrawable?.intrinsicWidth ?: 0
+                val height = scaleDrawable?.intrinsicHeight ?: 0
+                drawable.setBounds(0, 0, 400, 400)
+                setBounds(0, 0, 400, 400)
+            }
+        }
+    }
+
     fun showDatePicker(activity: Activity, onDateResult: (date: String) -> Unit) {
         val calendar = Calendar.getInstance()
         val datePickerDialog = DatePickerDialog(
@@ -249,6 +312,34 @@ object Helpers {
             setCancelable(true)
             show()
         }
+    }
+
+    fun String.decodeContent(): MutableList<StoryContent> {
+        val listData = mutableListOf<String>()
+        val dataFix = mutableListOf<StoryContent>()
+        val data = this.split("<img src=\"")
+        data.forEachIndexed { index, s ->
+            if (index != 0) {
+                val split = s.split("\" alt=\"\" width=\"360\">")
+                listData.addAll(split)
+            } else listData.add(s)
+        }
+        listData.forEach {
+            val type = if (it.substring(0, 8) == "https://") 1 else 0
+            dataFix.add(StoryContent(it, type))
+        }
+        return dataFix
+    }
+
+    fun imgPicker(context: Activity, x: Float, y: Float, onResultOk: (imgUri: Uri) -> Unit) {
+        ImagePicker.with(context)
+            .crop(x, y).start { resultCode, data ->
+                when (resultCode) {
+                    Activity.RESULT_OK -> onResultOk(data?.data ?: "".toUri())
+                    ImagePicker.RESULT_ERROR -> showToast(context, ImagePicker.getError(data))
+                    else -> showToast(context, "Task Canceled")
+                }
+            }
     }
 
 }

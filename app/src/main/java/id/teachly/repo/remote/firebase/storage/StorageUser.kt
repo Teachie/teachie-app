@@ -1,7 +1,7 @@
 package id.teachly.repo.remote.firebase.storage
 
 import android.net.Uri
-import android.util.Log
+import com.google.firebase.Timestamp
 import id.teachly.repo.remote.firebase.auth.Auth
 import id.teachly.utils.Const
 
@@ -16,23 +16,28 @@ object StorageUser {
             append(Auth.getUserId())
             append(Const.Storage.JPG)
         }
-        val ref = StorageInstance.instance.child(path)
-        val uploadTask = ref.putFile(img)
-        uploadTask.continueWithTask { task ->
-            if (!task.isSuccessful) task.exception?.let { throw it }
-            ref.downloadUrl
-        }.addOnCompleteListener {
-            when (it.isSuccessful) {
-                true -> {
-                    Log.d(TAG, "uploadPhoto: success= ${it.result}")
-                    isSuccess(true, it.result.toString())
-                }
-                false -> {
-                    Log.d(TAG, "uploadPhoto: failed = ${it.exception?.message}")
-                    isSuccess(false, "")
-                }
-            }
-        }
+        StorageInstance.uploadPhoto(img, path) { b, link -> isSuccess(b, link) }
+    }
 
+    fun storeImgStory(img: Uri, isSuccess: (Boolean, url: String) -> Unit) {
+        val path = buildString {
+            append(Const.Storage.IMAGE)
+            append(Const.Storage.STORY)
+            append("${Auth.getUserId()}/")
+            append(Timestamp.now())
+            append(Const.Storage.JPG)
+        }
+        StorageInstance.uploadPhoto(img, path) { b, link -> isSuccess(b, link) }
+    }
+
+    fun storeImgSpace(img: Uri, isSuccess: (Boolean, url: String) -> Unit) {
+        val path = buildString {
+            append(Const.Storage.IMAGE)
+            append(Const.Storage.SPACE)
+            append("${Auth.getUserId()}/")
+            append(Timestamp.now())
+            append(Const.Storage.JPG)
+        }
+        StorageInstance.uploadPhoto(img, path) { b, link -> isSuccess(b, link) }
     }
 }

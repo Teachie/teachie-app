@@ -30,9 +30,11 @@ class DetailListActivity : AppCompatActivity() {
         binding.rvData.apply {
             itemAnimator = DefaultItemAnimator()
             adapter = when (data.type) {
-                Const.List.SECTION -> HomeAdapter(this@DetailListActivity, 10)
+                Const.List.SECTION -> {
+                    HomeAdapter(this@DetailListActivity, listOf())
+                }
                 Const.List.SPACE -> SpaceAdapter(this@DetailListActivity, 10)
-                Const.List.USER -> UserAdapter(this@DetailListActivity, 20)
+                Const.List.USER -> UserAdapter(this@DetailListActivity, listOf())
                 else -> DiscussAdapter(this@DetailListActivity, 10)
             }
         }

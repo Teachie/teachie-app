@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
 import id.teachly.R
+import id.teachly.data.Users
 import id.teachly.databinding.ItemUserBinding
 import id.teachly.ui.detailuser.DetailUserActivity
-import id.teachly.utils.DummyData
 
 class UserAdapter(
     private val context: Context,
-    private val size: Int
+    private val dataUsers: List<Users>
 ) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     class UserViewHolder(view: View) : RecyclerView.ViewHolder(view)
@@ -29,17 +29,22 @@ class UserAdapter(
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+        val user = dataUsers[position]
         binding.apply {
-            ivAva.load(DummyData.getImg((0..1).random(), (0..3).random())) {
+            ivAva.load(user.img) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
             }
+            tvFullName.text = user.fullName
+            tvUsername.text = user.username
+            tvBio.text = user.bio ?: ""
+
             contentUser.setOnClickListener {
-                context.startActivity(Intent(context,DetailUserActivity::class.java))
+                context.startActivity(Intent(context, DetailUserActivity::class.java))
             }
         }
     }
 
-    override fun getItemCount(): Int = size
+    override fun getItemCount(): Int = dataUsers.size
 
 }

@@ -32,9 +32,9 @@ class HomeFragment : Fragment() {
 
         LinearSnapHelper().attachToRecyclerView(binding.rvHome)
 
+
         binding.rvHome.apply {
             itemAnimator = DefaultItemAnimator()
-            adapter = HomeAdapter(requireContext(), 10)
         }
     }
 }
