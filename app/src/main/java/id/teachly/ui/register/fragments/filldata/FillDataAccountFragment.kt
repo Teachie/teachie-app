@@ -17,14 +17,12 @@ import id.teachly.data.getNameOnly
 import id.teachly.databinding.FragmentAddInterestBinding
 import id.teachly.databinding.FragmentFillDataAcountBinding
 import id.teachly.repo.remote.firebase.auth.Auth
-import id.teachly.repo.remote.firebase.firestore.FirestoreCategory
 import id.teachly.repo.remote.firebase.firestore.FirestoreUser
 import id.teachly.ui.register.RegisterViewModel
-
 import id.teachly.utils.Const
+import id.teachly.utils.DialogHelpers
 import id.teachly.utils.DummyData
 import id.teachly.utils.Helpers
-import id.teachly.utils.Helpers.getQueryChange
 import id.teachly.utils.Helpers.setToolbarBack
 import id.teachly.utils.Helpers.showError
 import id.teachly.utils.Helpers.showView
@@ -150,49 +148,11 @@ class FillDataAccountFragment : Fragment(), DialogInterestImpl {
             R.layout.fragment_add_interest
         ) { view, dialog ->
             dialogBinding = FragmentAddInterestBinding.bind(view)
-            dialogBinding.apply {
-
-
-                searchView.apply {
-                    setOnQueryTextListener(getQueryChange {
-
-                        FirestoreCategory.searchCategory(it ?: "") { category ->
-                            populateItemInterest(category)
-                        }
-
-                    })
-                    setOnCloseListener {
-                        populateItemInterest(currentInterestData)
-                        return@setOnCloseListener false
-                    }
-                }
-
-                FirestoreCategory.getAllCategory {
-                    populateItemInterest(it)
-                }
-
-                btnSave.setOnClickListener {
-                    binding.chipGroup.removeAllViews()
-                    itemInterest.forEach {
-                        binding.chipGroup.addView(
-                            Chip(binding.chipGroup.context)
-                                .apply {
-                                    text = it.name
-                                    model.loadImage(it.img ?: "", requireContext()) { img ->
-                                        chipIcon = img
-                                    }
-                                })
-                    }
-                    binding.chipGroup.showView()
-                    dialog.dismiss()
-                }
-                btnClose.setOnClickListener { dialog.dismiss() }
-            }
-            dialog.show()
+            DialogHelpers.showBottomDialog(dialogBinding, dialog, this, currentInterestData)
         }
     }
 
-    private fun populateItemInterest(data: List<Category>) {
+    override fun populateItemInterest(data: List<Category>) {
         dialogBinding.rvInterest.apply {
             itemAnimator = DefaultItemAnimator()
             adapter = AddInterestAdapter(
@@ -203,6 +163,21 @@ class FillDataAccountFragment : Fragment(), DialogInterestImpl {
             )
         }
         dialogBinding.rvInterest.adapter?.notifyDataSetChanged()
+    }
+
+    override fun onSave() {
+        binding.chipGroup.removeAllViews()
+        itemInterest.forEach {
+            binding.chipGroup.addView(
+                Chip(binding.chipGroup.context)
+                    .apply {
+                        text = it.name
+                        model.loadImage(it.img ?: "", requireContext()) { img ->
+                            chipIcon = img
+                        }
+                    })
+        }
+        binding.chipGroup.showView()
     }
 
     private fun isNotEmpty(): Boolean {
