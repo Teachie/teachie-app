@@ -34,10 +34,11 @@ class DetailUserFragment : Fragment() {
         binding = FragmentDetailUserBinding.bind(view)
         binding.rvManageUser.apply {
             itemAnimator = DefaultItemAnimator()
-            adapter = if (currentIndex == 1) HomeAdapter(requireContext(), 10) else SpaceAdapter(
-                requireContext(),
-                5
-            )
+            adapter =
+                if (currentIndex == 1) HomeAdapter(requireContext(), listOf()) else SpaceAdapter(
+                    requireContext(),
+                    5
+                )
         }
     }
 

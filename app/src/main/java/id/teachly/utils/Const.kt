@@ -4,11 +4,17 @@ object Const {
     object Collection {
         const val CATEGORY = "category"
         const val USER = "user"
-        const val INTEREST = "interest"
+        const val STORY = "story"
+        const val SPACE = "space"
+        const val DISCUSSION = "discussion"
+        const val RESPONSE = "response"
     }
 
     object Storage {
         const val IMAGE = "image/"
+
+        const val STORY = "story/"
+        const val SPACE = "space/"
 
         const val AVATAR = "ava_"
 
@@ -17,6 +23,8 @@ object Const {
 
     object DateFormat {
         const val SIMPLE = "dd/MM/yyyy"
+        const val SHORT = "dd MMM"
+        const val LONG = "EEEE, dd MMMM yyyy"
     }
 
     object List {

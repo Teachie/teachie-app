@@ -9,15 +9,15 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/textView48"
+        android:id="@+id/tvUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="derysudrajat"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toStartOf="@+id/chip5"
-        app:layout_constraintStart_toStartOf="@+id/textView47"
-        app:layout_constraintTop_toBottomOf="@+id/textView47" />
+        app:layout_constraintEnd_toStartOf="@+id/btnFollow"
+        app:layout_constraintStart_toStartOf="@+id/tvFullName"
+        app:layout_constraintTop_toBottomOf="@+id/tvFullName" />
 
     <ImageView
         android:id="@+id/ivAva"
@@ -28,7 +28,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/textView47"
+        android:id="@+id/tvFullName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -38,12 +38,12 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/chip5"
+        app:layout_constraintEnd_toStartOf="@+id/btnFollow"
         app:layout_constraintStart_toEndOf="@+id/ivAva"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.chip.Chip
-        android:id="@+id/chip5"
+        android:id="@+id/btnFollow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ikuti"
@@ -57,13 +57,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView49"
+        android:id="@+id/tvBio"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="Software Engineering Student and Android Enthusiasm"
-        app:layout_constraintEnd_toStartOf="@+id/chip5"
-        app:layout_constraintStart_toStartOf="@+id/textView48"
-        app:layout_constraintTop_toBottomOf="@+id/textView48" />
+        app:layout_constraintEnd_toStartOf="@+id/btnFollow"
+        app:layout_constraintStart_toStartOf="@+id/tvUsername"
+        app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

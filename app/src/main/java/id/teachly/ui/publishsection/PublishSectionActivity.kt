@@ -1,6 +1,5 @@
 package id.teachly.ui.publishsection
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,27 +10,38 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.DefaultItemAnimator
 import coil.load
 import coil.transform.RoundedCornersTransformation
-import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.chip.Chip
 import id.teachly.R
 import id.teachly.data.Category
+import id.teachly.data.Story
+import id.teachly.data.getNameOnly
 import id.teachly.databinding.ActivityPublishSectionBinding
 import id.teachly.databinding.FragmentAddInterestBinding
-import id.teachly.repo.remote.firebase.firestore.FirestoreCategory
+import id.teachly.repo.remote.firebase.auth.Auth
 import id.teachly.ui.publishsection.choosespace.ChooseSpaceActivity
 import id.teachly.ui.register.RegisterViewModel
 import id.teachly.ui.register.fragments.filldata.AddInterestAdapter
 import id.teachly.ui.register.fragments.filldata.DialogInterestImpl
+import id.teachly.utils.DialogHelpers
 import id.teachly.utils.Helpers
+import id.teachly.utils.Helpers.hideLoadingDialog
+import id.teachly.utils.Helpers.imgPicker
+import id.teachly.utils.Helpers.showError
+import id.teachly.utils.Helpers.showLoadingDialog
+import id.teachly.utils.Helpers.showToast
 import id.teachly.utils.Helpers.showView
 
 class PublishSectionActivity : AppCompatActivity(), DialogInterestImpl {
 
     private lateinit var binding: ActivityPublishSectionBinding
     private lateinit var dialogBinding: FragmentAddInterestBinding
+    private lateinit var content: String
+
+    private val model: RegisterViewModel by viewModels()
+    private val publishModel: PublishSectionViewModel by viewModels()
+
     private var imgUri: Uri? = "".toUri()
     private val itemInterest = mutableListOf<Category>()
-    private val model: RegisterViewModel by viewModels()
     private val currentInterestData = mutableListOf<Category>()
     private var isPhotoReady = false
 
@@ -45,27 +55,16 @@ class PublishSectionActivity : AppCompatActivity(), DialogInterestImpl {
             setDisplayHomeAsUpEnabled(true)
         }
 
+        content = intent.extras?.getString(EXTRA_DATA_STORY) ?: ""
+
         binding.apply {
+            edtTitleSection.addTextChangedListener(Helpers.getTextWatcher { validateError() })
             tvUpload.setOnClickListener {
-                ImagePicker.with(this@PublishSectionActivity)
-                    .crop(3f, 2f).start { resultCode, data ->
-                        when (resultCode) {
-                            Activity.RESULT_OK -> {
-                                imgUri = data?.data
-                                isPhotoReady = true
-                                ivThumbnail.load(imgUri) { crossfade(true) }
-                            }
-                            ImagePicker.RESULT_ERROR -> {
-                                Helpers.showToast(
-                                    this@PublishSectionActivity,
-                                    ImagePicker.getError(data)
-                                )
-                            }
-                            else -> {
-                                Helpers.showToast(this@PublishSectionActivity, "Task Canceled")
-                            }
-                        }
-                    }
+                imgPicker(this@PublishSectionActivity, 3f, 2f) { uri ->
+                    imgUri = uri
+                    isPhotoReady = true
+                    ivThumbnail.load(imgUri) { crossfade(true) }
+                }
             }
             btnAddInterests.setOnClickListener { showBottomDialog() }
             btnAddSpace.setOnClickListener {
@@ -76,6 +75,29 @@ class PublishSectionActivity : AppCompatActivity(), DialogInterestImpl {
                     ), REQ_CODE
                 )
             }
+            btnSave.setOnClickListener {
+                showLoadingDialog(this@PublishSectionActivity, "Sedang merilis ceritamu")
+                if (isDataValid()) {
+                    if (isCategoryExist()) {
+                        val story = Story(
+                            title = edtTitleSection.text.toString(),
+                            content = content,
+                            categories = itemInterest.getNameOnly(),
+                            writerId = Auth.getCurrentUser()?.uid,
+                        )
+
+                        if (isPhotoReady) publishModel.publishWithThumbnail(
+                            story, imgUri ?: "".toUri()
+                        )
+                        else publishModel.publishStory(story)
+                        finish()
+
+                    } else {
+                        hideLoadingDialog()
+                        showToast(this@PublishSectionActivity, "Tambahkan kategori terlebih dahulu")
+                    }
+                } else validateTitle()
+            }
         }
     }
 
@@ -85,52 +107,11 @@ class PublishSectionActivity : AppCompatActivity(), DialogInterestImpl {
             R.layout.fragment_add_interest
         ) { view, dialog ->
             dialogBinding = FragmentAddInterestBinding.bind(view)
-            dialogBinding.apply {
-
-
-                searchView.apply {
-                    setOnQueryTextListener(Helpers.getQueryChange {
-
-                        FirestoreCategory.searchCategory(it ?: "") { category ->
-                            populateItemInterest(category)
-                        }
-
-                    })
-                    setOnCloseListener {
-                        populateItemInterest(currentInterestData)
-                        return@setOnCloseListener false
-                    }
-                }
-
-                FirestoreCategory.getAllCategory {
-                    populateItemInterest(it)
-                }
-
-                btnSave.setOnClickListener {
-                    binding.chipGroup.removeAllViews()
-                    itemInterest.forEach {
-                        binding.chipGroup.addView(
-                            Chip(binding.chipGroup.context)
-                                .apply {
-                                    text = it.name
-                                    model.loadImage(
-                                        it.img ?: "",
-                                        this@PublishSectionActivity
-                                    ) { img ->
-                                        chipIcon = img
-                                    }
-                                })
-                    }
-                    binding.chipGroup.showView()
-                    dialog.dismiss()
-                }
-                btnClose.setOnClickListener { dialog.dismiss() }
-            }
-            dialog.show()
+            DialogHelpers.showBottomDialog(dialogBinding, dialog, this, currentInterestData)
         }
     }
 
-    private fun populateItemInterest(data: List<Category>) {
+    override fun populateItemInterest(data: List<Category>) {
         dialogBinding.rvInterest.apply {
             itemAnimator = DefaultItemAnimator()
             adapter = AddInterestAdapter(
@@ -141,6 +122,23 @@ class PublishSectionActivity : AppCompatActivity(), DialogInterestImpl {
             )
         }
         dialogBinding.rvInterest.adapter?.notifyDataSetChanged()
+    }
+
+    override fun onSave() {
+        binding.chipGroup.removeAllViews()
+        itemInterest.forEach {
+            binding.chipGroup.addView(
+                Chip(binding.chipGroup.context).apply {
+                    text = it.name
+                    model.loadImage(
+                        it.img ?: "",
+                        this@PublishSectionActivity
+                    ) { img ->
+                        chipIcon = img
+                    }
+                })
+        }
+        binding.chipGroup.showView()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -177,8 +175,20 @@ class PublishSectionActivity : AppCompatActivity(), DialogInterestImpl {
         }
     }
 
+    private fun isDataValid(): Boolean = !binding.edtTitleSection.text.isNullOrEmpty()
+    private fun isCategoryExist(): Boolean = itemInterest.size != 0
+    private fun validateTitle() {
+        hideLoadingDialog()
+        binding.apply {
+            if (edtTitleSection.text.isNullOrEmpty()) tilTitleSection.showError("Tidak boleh kosong")
+        }
+    }
+
+    private fun validateError() = Helpers.validateError(binding.tilTitleSection)
+
     companion object {
         const val REQ_CODE = 101
         const val EXTRA_DATA_SPACE = "extra_data_space"
+        const val EXTRA_DATA_STORY = "extra_data_story"
     }
 }

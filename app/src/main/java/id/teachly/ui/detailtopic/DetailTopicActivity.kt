@@ -44,7 +44,7 @@ class DetailTopicActivity : AppCompatActivity() {
 
             rvSection.apply {
                 itemAnimator = DefaultItemAnimator()
-                adapter = HomeAdapter(this@DetailTopicActivity, 10)
+                adapter = HomeAdapter(this@DetailTopicActivity, listOf())
             }
 
             tvMoreSpace.setOnClickListener {

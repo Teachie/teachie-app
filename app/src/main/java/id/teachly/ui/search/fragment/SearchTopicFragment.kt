@@ -35,9 +35,9 @@ class SearchTopicFragment : Fragment() {
         binding.rvSearch.apply {
             itemAnimator = DefaultItemAnimator()
             adapter = when (currentIndex) {
-                1 -> HomeAdapter(requireContext(), 10)
+                1 -> HomeAdapter(requireContext(), listOf())
                 2 -> SpaceAdapter(requireContext(), 20)
-                3 -> UserAdapter(requireContext(), 30)
+                3 -> UserAdapter(requireContext(), listOf())
                 else -> DiscussAdapter(requireContext(), 10)
             }
         }

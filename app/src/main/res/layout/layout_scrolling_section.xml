@@ -12,7 +12,7 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/textView53"
+            android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Jetpack Compose now stable in Android Studio 4.1"
@@ -27,14 +27,14 @@
             android:id="@+id/ivAva"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView54"
+            app:layout_constraintBottom_toBottomOf="@+id/tvName"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView54"
+            app:layout_constraintTop_toTopOf="@+id/tvName"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/textView54"
+            android:id="@+id/tvName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -42,43 +42,43 @@
             android:text="Dery Sudrajat"
             android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/ivAva"
-            app:layout_constraintTop_toBottomOf="@+id/textView53" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
         <TextView
-            android:id="@+id/textView55"
+            android:id="@+id/tvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="19 Desember 2020"
-            app:layout_constraintBottom_toBottomOf="@+id/textView54"
-            app:layout_constraintStart_toEndOf="@+id/textView54"
-            app:layout_constraintTop_toTopOf="@+id/textView54" />
+            app:layout_constraintBottom_toBottomOf="@+id/tvName"
+            app:layout_constraintStart_toEndOf="@+id/tvName"
+            app:layout_constraintTop_toTopOf="@+id/tvName" />
 
-        <TextView
-            android:id="@+id/textView56"
-            android:layout_width="0dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvContent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In aliquam sem fringilla ut morbi tincidunt augue interdum. Morbi tincidunt augue interdum velit. Morbi tincidunt ornare massa eget egestas purus. Scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et. Ultricies mi eget mauris pharetra et. Eget egestas purus viverra accumsan in. Lobortis mattis aliquam faucibus purus in. Gravida rutrum quisque non tellus orci ac auctor augue. Fermentum odio eu feugiat pretium nibh ipsum consequat. Venenatis cras sed felis eget velit aliquet sagittis id. A erat nam at lectus urna. Varius vel pharetra vel turpis nunc eget lorem. Sapien faucibus et molestie ac feugiat sed lectus vestibulum mattis. Urna nec tincidunt praesent semper feugiat. Pretium viverra suspendisse potenti nullam ac tortor vitae. Dui ut ornare lectus sit. Consequat interdum varius sit amet mattis vulputate enim. Nulla pellentesque dignissim enim sit amet venenatis urna. Metus aliquam eleifend mi in nulla posuere sollicitudin aliquam.  Sit amet mauris commodo quis imperdiet massa tincidunt nunc pulvinar. Turpis egestas pretium aenean pharetra magna ac placerat vestibulum lectus. Augue interdum velit euismod in pellentesque. Massa massa ultricies mi quis hendrerit dolor magna eget est. Amet mauris commodo quis imperdiet massa tincidunt. Hendrerit gravida rutrum quisque non tellus orci ac. Dis parturient montes nascetur ridiculus mus mauris. Interdum velit euismod in pellentesque massa. Diam vel quam elementum pulvinar etiam non quam lacus suspendisse. Arcu vitae elementum curabitur vitae nunc sed velit. Ipsum consequat nisl vel pretium. Mauris pharetra et ultrices neque ornare aenean euismod elementum. Velit laoreet id donec ultrices tincidunt.  Mattis aliquam faucibus purus in massa tempor nec feugiat. Nibh sit amet commodo nulla facilisi. Pharetra diam sit amet nisl. Quam nulla porttitor massa id. Ultrices eros in cursus turpis. Arcu cursus euismod quis viverra nibh cras pulvinar mattis nunc. Pellentesque id nibh tortor id. Enim diam vulputate ut pharetra sit amet aliquam id. Amet facilisis magna etiam tempor orci eu lobortis. Turpis egestas pretium aenean pharetra magna ac placerat vestibulum lectus. Erat imperdiet sed euismod nisi porta lorem mollis aliquam. Nec feugiat in fermentum posuere urna nec tincidunt praesent. Ut ornare lectus sit amet est. Sed risus pretium quam vulputate dignissim suspendisse. Purus faucibus ornare suspendisse sed nisi lacus sed viverra. In iaculis nunc sed augue. Montes nascetur ridiculus mus mauris vitae ultricies leo integer malesuada. Est lorem ipsum dolor sit amet consectetur adipiscing elit.  Eu tincidunt tortor aliquam nulla facilisi cras. Urna cursus eget nunc scelerisque viverra mauris in. Pharetra convallis posuere morbi leo urna molestie. Sapien nec sagittis aliquam malesuada. Tristique senectus et netus et malesuada fames ac turpis egestas. In ante metus dictum at tempor commodo. Enim nunc faucibus a pellentesque. Etiam non quam lacus suspendisse faucibus. Elit eget gravida cum sociis natoque penatibus et magnis dis. Aliquam malesuada bibendum arcu vitae elementum curabitur vitae. Convallis posuere morbi leo urna molestie at elementum eu facilisis.  Donec ac odio tempor orci dapibus ultrices. Nulla malesuada pellentesque elit eget gravida cum sociis. Nec tincidunt praesent semper feugiat nibh sed. Diam phasellus vestibulum lorem sed risus. Eget lorem dolor sed viverra. Tristique senectus et netus et malesuada fames ac. Volutpat blandit aliquam etiam erat velit scelerisque in dictum non. Mauris vitae ultricies leo integer malesuada nunc vel risus. Sapien eget mi proin sed libero. Et egestas quis ipsum suspendisse ultrices gravida dictum fusce ut. Risus ultricies tristique nulla aliquet enim tortor at auctor urna. Risus at ultrices mi tempus imperdiet nulla. Neque convallis a cras semper. Tortor aliquam nulla facilisi cras fermentum. Donec ultrices tincidunt arcu non sodales neque sodales ut. Diam vel quam elementum pulvinar etiam non quam. Duis at tellus at urna condimentum. Tincidunt lobortis feugiat vivamus at augue eget. Curabitur gravida arcu ac tortor dignissim."
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView54" />
+            app:layout_constraintTop_toBottomOf="@+id/tvName" />
 
         <CheckBox
-            android:id="@+id/checkBox5"
+            android:id="@+id/cbLike"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:button="@drawable/ic_favorite"
             android:clickable="false"
             android:paddingStart="8dp"
-            android:text="123"
             android:textIsSelectable="false"
-            app:layout_constraintStart_toStartOf="@+id/textView56"
-            app:layout_constraintTop_toBottomOf="@+id/textView56" />
+            app:layout_constraintStart_toStartOf="@+id/rvContent"
+            app:layout_constraintTop_toBottomOf="@+id/rvContent" />
 
         <CheckBox
-            android:id="@+id/checkBox6"
+            android:id="@+id/cbComment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -86,25 +86,17 @@
             android:button="@drawable/ic_forum"
             android:clickable="false"
             android:paddingStart="8dp"
-            android:text="123"
             android:textIsSelectable="false"
-            app:layout_constraintStart_toEndOf="@+id/checkBox5"
-            app:layout_constraintTop_toBottomOf="@+id/textView56" />
+            app:layout_constraintStart_toEndOf="@+id/cbLike"
+            app:layout_constraintTop_toBottomOf="@+id/rvContent" />
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup3"
+            android:id="@+id/chipGroup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox5">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Android" />
-        </com.google.android.material.chip.ChipGroup>
+            app:layout_constraintTop_toBottomOf="@+id/cbLike" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvWriter"
@@ -116,7 +108,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chipGroup3"
+            app:layout_constraintTop_toBottomOf="@+id/chipGroup"
             tools:itemCount="2"
             tools:listitem="@layout/item_user" />
 
