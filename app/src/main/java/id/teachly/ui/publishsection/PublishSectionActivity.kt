@@ -13,6 +13,7 @@ import coil.transform.RoundedCornersTransformation
 import com.google.android.material.chip.Chip
 import id.teachly.R
 import id.teachly.data.Category
+import id.teachly.data.Space
 import id.teachly.data.Story
 import id.teachly.data.getNameOnly
 import id.teachly.databinding.ActivityPublishSectionBinding
@@ -44,6 +45,7 @@ class PublishSectionActivity : AppCompatActivity(), DialogInterestImpl {
     private val itemInterest = mutableListOf<Category>()
     private val currentInterestData = mutableListOf<Category>()
     private var isPhotoReady = false
+    private var currentSpace: Space? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,15 +84,18 @@ class PublishSectionActivity : AppCompatActivity(), DialogInterestImpl {
                         val story = Story(
                             title = edtTitleSection.text.toString(),
                             content = content,
+                            spaceId = currentSpace?.spaceId,
                             categories = itemInterest.getNameOnly(),
                             writerId = Auth.getCurrentUser()?.uid,
                         )
 
+                        if (currentSpace?.spaceId != null) publishModel.updateSpace(currentSpace!!)
+
                         if (isPhotoReady) publishModel.publishWithThumbnail(
-                            story, imgUri ?: "".toUri()
+                            story, imgUri ?: "".toUri(), this@PublishSectionActivity
                         )
-                        else publishModel.publishStory(story)
-                        finish()
+                        else publishModel.publishStory(story, this@PublishSectionActivity)
+
 
                     } else {
                         hideLoadingDialog()
@@ -156,22 +161,32 @@ class PublishSectionActivity : AppCompatActivity(), DialogInterestImpl {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQ_CODE) showDataSpace()
+        if (requestCode == REQ_CODE) showDataSpace(data)
     }
 
-    private fun showDataSpace() {
+    private fun showDataSpace(data: Intent?) {
+        val space = data?.getParcelableExtra<Space>(EXTRA_DATA_SPACE)
         binding.apply {
             btnAddSpace.text = "Ubah"
             ivAva.apply {
-                load(Helpers.dummyAva) {
+                load(space?.img) {
                     crossfade(true)
                     transformations(RoundedCornersTransformation(8f))
                 }
                 showView()
             }
+
             tvConnectedSpace.showView()
-            tvSpace.showView()
-            tvDscSpace.showView()
+            tvSpace.apply {
+                text = space?.title
+                showView()
+            }
+
+            tvDscSpace.apply {
+                text = space?.desc
+                showView()
+            }
+            currentSpace = space
         }
     }
 

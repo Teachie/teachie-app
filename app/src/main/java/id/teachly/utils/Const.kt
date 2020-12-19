@@ -14,7 +14,10 @@ object Const {
         const val IMAGE = "image/"
 
         const val STORY = "story/"
+
         const val SPACE = "space/"
+
+        const val DISCUSSION = "discussion/"
 
         const val AVATAR = "ava_"
 

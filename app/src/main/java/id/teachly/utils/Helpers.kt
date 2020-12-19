@@ -40,6 +40,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Timestamp
 import id.teachly.R
+import id.teachly.data.Grouping
+import id.teachly.data.Space
 import id.teachly.data.StoryContent
 import id.teachly.utils.Helpers.loadDrawable
 import java.text.SimpleDateFormat
@@ -325,7 +327,9 @@ object Helpers {
             } else listData.add(s)
         }
         listData.forEach {
-            val type = if (it.substring(0, 8) == "https://") 1 else 0
+            val type = if (it.length > 8) {
+                if (it.substring(0, 8) == "https://") 1 else 0
+            } else 0
             dataFix.add(StoryContent(it, type))
         }
         return dataFix
@@ -342,4 +346,19 @@ object Helpers {
             }
     }
 
+    fun List<Space>.toGrouping(): MutableList<Grouping> {
+        val grouping = mutableListOf<Grouping>()
+        this.forEach {
+            grouping.add(
+                Grouping(
+                    spaceId = it.spaceId,
+                    title = it.title,
+                    desc = it.desc,
+                    section = it.section,
+                    img = it.img
+                )
+            )
+        }
+        return grouping
+    }
 }

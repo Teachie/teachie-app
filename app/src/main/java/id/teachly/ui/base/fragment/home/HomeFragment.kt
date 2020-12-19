@@ -5,16 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearSnapHelper
 import id.teachly.R
 import id.teachly.databinding.FragmentHomeBinding
+import id.teachly.ui.managecontent.ManageContentViewModel
 
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var binding: FragmentHomeBinding
+    private val model: ManageContentViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,12 +31,15 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.bind(view)
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
+        model.loadStories()
 
-        LinearSnapHelper().attachToRecyclerView(binding.rvHome)
+        model.stories.observe(viewLifecycleOwner, {
+            binding.rvHome.apply {
+                itemAnimator = DefaultItemAnimator()
+                adapter = HomeAdapter(requireContext(), it)
+            }
+        })
 
 
-        binding.rvHome.apply {
-            itemAnimator = DefaultItemAnimator()
-        }
     }
 }

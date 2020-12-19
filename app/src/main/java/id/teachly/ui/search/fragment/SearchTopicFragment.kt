@@ -38,7 +38,7 @@ class SearchTopicFragment : Fragment() {
                 1 -> HomeAdapter(requireContext(), listOf())
                 2 -> SpaceAdapter(requireContext(), 20)
                 3 -> UserAdapter(requireContext(), listOf())
-                else -> DiscussAdapter(requireContext(), 10)
+                else -> DiscussAdapter(requireContext(), listOf())
             }
         }
     }

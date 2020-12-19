@@ -15,11 +15,11 @@ import id.teachly.databinding.FragmentProfileBinding
 import id.teachly.repo.remote.firebase.auth.Auth
 import id.teachly.repo.remote.firebase.firestore.FirestoreCategory
 import id.teachly.repo.remote.firebase.firestore.FirestoreUser
+import id.teachly.ui.base.MainActivity
 import id.teachly.ui.editprofile.EditProfileActivity
 import id.teachly.ui.managecontent.ManageContentActivity
 import id.teachly.ui.saved.SavedActivity
 import id.teachly.ui.welcome.WelcomeActivity
-import id.teachly.utils.Helpers
 import id.teachly.utils.Helpers.hideLoadingDialog
 import id.teachly.utils.Helpers.hideView
 import id.teachly.utils.Helpers.showLoadingDialog
@@ -105,6 +105,12 @@ class ProfileFragment : Fragment() {
                             showLoadingDialog(requireContext())
                             FirestoreUser.updateStatusCreator {
                                 requireActivity().finish()
+                                requireActivity().startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        MainActivity::class.java
+                                    )
+                                )
                             }
                         }
                     }
@@ -112,7 +118,7 @@ class ProfileFragment : Fragment() {
             }
 
             btnLogout.setOnClickListener {
-                Helpers.showLoadingDialog(requireContext())
+                showLoadingDialog(requireContext())
                 Auth.logout()
                 startActivity(Intent(requireContext(), WelcomeActivity::class.java))
                 requireActivity().finishAffinity()

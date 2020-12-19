@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import id.teachly.R
+import id.teachly.data.Space
 import id.teachly.databinding.ItemSpaceChooseBinding
-import id.teachly.utils.Helpers
 
 class ChooseSpaceAdapter(
     private val context: Context,
-    private val size: Int
+    private val spaces: List<Space>
 ) : RecyclerView.Adapter<ChooseSpaceAdapter.ChooseSpaceViewHolder>() {
 
     class ChooseSpaceViewHolder(view: View) : RecyclerView.ViewHolder(view)
@@ -29,16 +29,21 @@ class ChooseSpaceAdapter(
     }
 
     override fun onBindViewHolder(holder: ChooseSpaceViewHolder, position: Int) {
+        val space = spaces[position]
         binding.apply {
-            ivAva.load(Helpers.dummyAva) {
+            ivAva.load(space.img) {
                 crossfade(true)
                 transformations(RoundedCornersTransformation(8f))
             }
+
+            tvTitleSpace.text = space.title
+            tvDescSpace.text = space.desc
+
             contentSpace.setOnClickListener {
-                (context as ChooseSpaceActivity).addSpace("Data")
+                (context as ChooseSpaceActivity).addSpace(space)
             }
         }
     }
 
-    override fun getItemCount(): Int = size
+    override fun getItemCount(): Int = spaces.size
 }

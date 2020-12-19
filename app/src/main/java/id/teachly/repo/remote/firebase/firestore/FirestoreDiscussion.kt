@@ -19,15 +19,21 @@ object FirestoreDiscussion {
             }
     }
 
-    fun createNewResponse(response: Response, isSuccess: (Boolean) -> Unit) {
+
+    fun createNewResponse(response: Response) {
         FirestoreInstance.instance.collection(Const.Collection.RESPONSE)
             .document()
             .set(response)
-            .addOnSuccessListener { isSuccess(true) }
-            .addOnFailureListener {
-                isSuccess(false)
-                Log.d(TAG, "createNewResponse: failed = ${it.message}")
-            }
+            .addOnSuccessListener { Log.d(TAG, "createNewResponse: success") }
+            .addOnFailureListener { Log.d(TAG, "createNewResponse: failed") }
+    }
+
+    fun updateResponseTotal(discussionId: String, total: Int) {
+        FirestoreInstance.instance.collection(Const.Collection.DISCUSSION)
+            .document(discussionId)
+            .update("responses", total.plus(1))
+            .addOnSuccessListener { Log.d(TAG, "updateResponseTotal: success") }
+            .addOnFailureListener { Log.d(TAG, "updateResponseTotal: failed") }
     }
 
     fun getDiscussionByStoryId(storyId: String, isSuccess: (Boolean, List<Discussion>) -> Unit) {
@@ -44,6 +50,42 @@ object FirestoreDiscussion {
                 }
             }
     }
+
+    fun getDiscussionByUserId(userId: String, isSuccess: (Boolean, List<Discussion>) -> Unit) {
+        FirestoreInstance.instance.collection(Const.Collection.DISCUSSION)
+            .whereEqualTo("writerId", userId)
+            .whereEqualTo("storyId", null)
+            .addSnapshotListener { value, error ->
+                if (error != null) Log.d(TAG, "getDiscussionByUserId: error = ${error.message}")
+
+                if (value != null && !value.isEmpty) {
+                    isSuccess(true, value.toObjects(Discussion::class.java))
+                } else {
+                    isSuccess(false, listOf())
+                    Log.d(TAG, "getDiscussionByUserId: failed = ${error?.message}")
+                }
+            }
+    }
+
+
+    fun getDiscussionByDiscussionId(
+        discussionId: String,
+        isSuccess: (Boolean, Discussion) -> Unit
+    ) {
+        FirestoreInstance.instance.collection(Const.Collection.DISCUSSION)
+            .document(discussionId)
+            .addSnapshotListener { value, error ->
+                if (error != null) Log.d(TAG, "getDiscussionByUserId: error = ${error.message}")
+
+                if (value != null && value.exists()) {
+                    isSuccess(true, value.toObject(Discussion::class.java) ?: Discussion())
+                } else {
+                    isSuccess(false, Discussion())
+                    Log.d(TAG, "getDiscussionByUserId: failed = ${error?.message}")
+                }
+            }
+    }
+
 
     fun getResponseByDiscussionId(discussId: String, isSuccess: (Boolean, List<Response>) -> Unit) {
         FirestoreInstance.instance.collection(Const.Collection.RESPONSE)
